@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adebayo Paul Femi — Data & AI Analyst</title>
+
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --white:#fafaf8;
+  --black:#0e0e0d;
+  --gray:#f2f1ef;
+  --border:#e4e3df;
+  --muted:#9a9990;
+  --green:#2d6a4f;
+}
+body{
+  background:var(--white);
+  color:var(--black);
+  font-family:'Calibri',Calibri,Arial,sans-serif;font-size:15px;
+  font-weight:400;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 3rem;
+  background:rgba(250,250,248,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  gap:1.5rem;
+}
+.nav-logo{
+  font-family:'Calibri',Calibri,Consolas,monospace;
+  font-size:.75rem;color:var(--black);text-decoration:none;
+  white-space:nowrap;flex-shrink:0;
+}
+.nav-links{display:flex;gap:1.75rem;list-style:none;flex-shrink:0}
+.nav-links a{font-size:.8rem;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:var(--black)}
+
+/* LIVE CLOCKS in nav */
+.nav-clocks{
+  display:flex;gap:1.5rem;align-items:center;flex-shrink:0;
+}
+.clock-item{
+  display:flex;flex-direction:column;align-items:flex-end;
+  gap:.05rem;
+}
+.clock-tz{
+  font-family:'Calibri',Calibri,Consolas,monospace;
+  font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);
+}
+.clock-time{
+  font-family:'Calibri',Calibri,Consolas,monospace;
+  font-size:.72rem;font-weight:700;
+  color:var(--black);letter-spacing:.04em;
+}
+.nav-cta{
+  font-family:'Calibri',Calibri,Arial,sans-serif;font-size:15px;
+  font-size:.78rem;font-weight:500;
+  padding:.45rem 1.2rem;border:1px solid var(--black);
+  color:var(--black);text-decoration:none;border-radius:100px;
+  transition:background .15s,color .15s;white-space:nowrap;flex-shrink:0;
+}
+.nav-cta:hover{background:var(--black);color:var(--white)}
+
+/* TICKER */
+.ticker-wrap{
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+  background:var(--white);
+  padding:.6rem 0;
+  margin-top:64px;
+}
+.ticker-wrap::before,
+.ticker-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;
+}
+.ticker-wrap::before{left:0;background:linear-gradient(to right,var(--white),transparent)}
+.ticker-wrap::after{right:0;background:linear-gradient(to left,var(--white),transparent)}
+.ticker-track{
+  display:flex;gap:0;
+  animation:ticker 30s linear infinite;
+  width:max-content;
+}
+.ticker-track:hover{animation-play-state:paused}
+@keyframes ticker{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+.ticker-item{
+  font-family:'Calibri',Calibri,Consolas,monospace;
+  font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);
+  padding:0 2rem;
+  white-space:nowrap;
+  display:flex;align-items:center;gap:2rem;
+}
+.ticker-item::after{
+  content:'·';color:var(--border);font-size:1.2rem;
+}
+
+/* HERO */
+.hero{
+  min-height:calc(100vh - 64px);
+  display:grid;grid-template-rows:1fr auto;
+  padding:0 3rem;
+}
+.hero-main{
+  display:flex;flex-direction:column;
+  justify-content:center;padding:4rem 0 2rem;
+}
+.eyebrow{
+  font-family:'Calibri',Calibri,Consolas,monospace;
+  font-size:.68rem;font-weight:400;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:2rem;display:flex;align-items:center;gap:.75rem;
+}
+.eyebrow::before{content:'';width:32px;height:1px;background:var(--border)}
+.hero-name{
+  font-family:'Times New Roman',Times,serif;
+  font-size:clamp(4.5rem,10vw,10.5rem);
+  line-height:.92;letter-spacing:-.02em;font-weight:600;
+  margin-bottom:3rem;
+  font-style:normal;
+}
+.hero-body{
+  display:grid;grid-template-columns:1fr 1fr;gap:3rem;
+  padding:2rem 0 0;border-top:1px solid var(--border);
+}
+.hero-desc{
+  font-size:1rem;color:#4a4a48;line-height:1.8;max-width:440px;
+  font-weight:300;
+}
+.hero-meta{display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem}
+.actions{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+.btn-dark{
+  font-size:.8rem;font-weight:500;padding:.65rem 1.5rem;
+  background:var(--black);color:var(--white);border-radius:100px;
+  text-decoration:none;transition:opacity .15s;
+}
+.btn-dark:hover{opacity:.8}
+.btn-ghost{
+  font-size:.8rem;font-weight:400;padding:.65rem 1.5rem;
+  border:1px solid var(--border);border-radius:100px;
+  color:var(--black);text-decoration:none;transition:border-color .15s;
+}
+.btn-ghost:hover{border-color:var(--black)}
+
+.stats-bar{display:flex;border-top:1px solid var(--border)}
+.stat{flex:1;padding:1.5rem 0;border-right:1px solid var(--border)}
+.stat:not(:first-child){padding-left:2rem}
+.stat:last-child{border-right:none}
+.stat-n{
+  font-family:'Times New Roman',Times,serif;
+  font-size:2.75rem;line-height:1;letter-spacing:-.03em;margin-bottom:.25rem;font-weight:600;
+}
+.stat-l{
+  font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;
+  font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+
+/* SHARED */
+.divider{width:100%;height:1px;background:var(--border)}
+.wrap{padding:6rem 3rem;max-width:1280px;margin:0 auto}
+.lbl{
+  font-family:'Calibri',Calibri,Consolas,monospace;font-size:.62rem;font-weight:400;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;
+}
+.sh{
+  font-family:'Times New Roman',Times,serif;
+  font-size:clamp(2.5rem,4.5vw,4.25rem);line-height:1.05;
+  letter-spacing:-.02em;font-weight:600;margin-bottom:3.5rem;
+}
+.sh em{font-style:italic;color:var(--muted)}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:6rem;align-items:start}
+.about-lead{
+  font-family:'Times New Roman',Times,serif;
+  font-size:1.5rem;line-height:1.55;letter-spacing:-.01em;margin-bottom:1.5rem;font-weight:500;
+}
+.about-body{font-size:.92rem;color:#5a5a58;line-height:1.85;font-weight:300}
+.about-body p{margin-bottom:1rem}
+.drow{
+  display:grid;grid-template-columns:140px 1fr;
+  padding:1rem 0;border-bottom:1px solid var(--border);gap:1rem;
+}
+.drow:first-child{border-top:1px solid var(--border)}
+.dk{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.dv{font-size:.88rem;color:var(--black)}
+.dv a{color:var(--black);text-decoration:underline;text-underline-offset:3px}
+.dv a:hover{color:var(--muted)}
+.open{color:var(--green);font-weight:500}
+
+/* EXPERIENCE */
+.xrow{
+  display:grid;grid-template-columns:180px 1fr;gap:3rem;
+  padding:2.5rem 0;border-bottom:1px solid var(--border);
+}
+.xrow:first-child{border-top:1px solid var(--border)}
+.xdate{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.65rem;font-weight:400;letter-spacing:.08em;color:var(--muted);margin-bottom:.35rem}
+.xco{font-size:.82rem;font-weight:600;color:var(--black);margin-bottom:.2rem}
+.xloc{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;font-weight:400;letter-spacing:.06em;color:var(--muted)}
+.xrole{font-family:'Times New Roman',Times,serif;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:.85rem;font-weight:600}
+.xbullets{list-style:none;display:grid;gap:.5rem}
+.xbullets li{font-size:.88rem;color:#5a5a58;line-height:1.65;padding-left:1.1rem;position:relative;font-weight:300}
+.xbullets li::before{content:'→';position:absolute;left:0;color:var(--border);font-size:.75rem;top:.1rem}
+
+/* PROJECTS */
+.pfeat{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:1.5rem;
+}
+.pfl{padding:3rem;border-right:1px solid var(--border)}
+.pfr{padding:3rem;background:var(--gray);display:flex;flex-direction:column;justify-content:space-between}
+.ptag{
+  font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;font-weight:400;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;
+}
+.pname{
+  font-family:'Times New Roman',Times,serif;font-size:1.85rem;
+  letter-spacing:-.02em;line-height:1.15;font-weight:600;margin-bottom:1rem;
+}
+.pdesc{font-size:.88rem;color:#5a5a58;line-height:1.75;margin-bottom:1.5rem;font-weight:300}
+.techs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.75rem}
+.tech{
+  font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;font-weight:400;
+  letter-spacing:.06em;padding:.25rem .65rem;
+  border:1px solid var(--border);border-radius:100px;color:var(--muted);background:var(--white);
+}
+.plink{
+  font-size:.78rem;font-weight:500;color:var(--black);text-decoration:none;
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.6rem 1.25rem;border:1px solid var(--black);border-radius:100px;
+  transition:background .15s,color .15s;width:fit-content;
+}
+.plink:hover{background:var(--black);color:var(--white)}
+.score-lbl{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.score-n{
+  font-family:'Times New Roman',Times,serif;
+  font-size:7.5rem;line-height:.88;letter-spacing:-.05em;font-weight:700;color:var(--black);margin-bottom:1rem;
+}
+.score-sub{font-size:.82rem;color:#7a7a78;line-height:1.65;margin-bottom:1rem;font-weight:300}
+.score-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.stag{
+  font-size:.68rem;font-weight:500;padding:.3rem .75rem;
+  background:var(--black);color:var(--white);border-radius:100px;
+}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.pcard{
+  padding:2rem;border:1px solid var(--border);border-radius:4px;
+  transition:border-color .2s,transform .2s;
+}
+.pcard:hover{border-color:#b0afa9;transform:translateY(-2px)}
+.pcard .pname{font-size:1.3rem;margin-bottom:.75rem}
+
+/* SKILLS */
+.sgrid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--border);border-radius:4px;overflow:hidden;
+}
+.scol{padding:2rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.scol:nth-child(3n){border-right:none}
+.scol:nth-child(n+4){border-bottom:none}
+.shead{
+  font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--black);
+  margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);
+}
+.sitems{display:flex;flex-direction:column;gap:.35rem}
+.si{font-size:.85rem;color:#5a5a58;padding:.15rem 0;font-weight:300}
+
+/* CERTS */
+.certs{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.ccard{padding:1.5rem;border:1px solid var(--border);border-radius:4px}
+.cnum{
+  font-family:'Times New Roman',Times,serif;
+  font-size:1.85rem;color:var(--border);letter-spacing:-.04em;margin-bottom:.75rem;font-weight:600;
+}
+.ctitle{font-size:.88rem;font-weight:500;color:var(--black);margin-bottom:.25rem;line-height:1.3}
+.corg{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;font-weight:400;letter-spacing:.06em;color:var(--muted)}
+
+/* CONTACT */
+.cta-section{padding:8rem 3rem;border-top:1px solid var(--border)}
+.cta-inner{max-width:1280px;margin:0 auto}
+.cta-headline{
+  font-family:'Times New Roman',Times,serif;
+  font-size:clamp(2.5rem,6vw,6.5rem);
+  letter-spacing:-.03em;line-height:.93;font-weight:600;
+  margin-bottom:4rem;max-width:800px;
+}
+.cta-headline em{font-style:italic;color:var(--muted)}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border)}
+.ccol{padding:2rem 1.5rem 2rem 0;border-right:1px solid var(--border)}
+.ccol:last-child{border-right:none}
+.cclbl{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+.ccval{font-size:.88rem;color:var(--black);line-height:1.7;font-weight:300}
+.ccval a{color:var(--black);text-decoration:underline;text-underline-offset:3px}
+.ccval a:hover{color:var(--muted)}
+
+footer{
+  padding:1.5rem 3rem;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.fl{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.fr{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.62rem;color:#ccc9c2}
+
+/* CERT CHIPS */
+.cert-chip{
+  font-size:.78rem;font-weight:300;color:#5a5a58;
+  padding:.55rem .9rem;
+  border:1px solid var(--border);border-radius:2px;
+  background:var(--gray);
+  line-height:1.4;
+  transition:border-color .15s,color .15s;
+}
+.cert-chip:hover{border-color:#b0afa9;color:var(--black)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  nav{padding:.9rem 1.5rem}
+  .nav-links{display:none}
+  .nav-clocks{display:none}
+}
+@media(max-width:900px){
+  .hero{padding:0 1.5rem}
+  .hero-body{grid-template-columns:1fr}
+  .stats-bar{display:grid;grid-template-columns:1fr 1fr}
+  .stat{border-right:1px solid var(--border)}
+  .stat:nth-child(2n){border-right:none}
+  .stat:nth-child(n+3){border-top:1px solid var(--border)}
+  .wrap{padding:4rem 1.5rem}
+  .about-grid,.pfeat{grid-template-columns:1fr}
+  .pfl{border-right:none;border-bottom:1px solid var(--border)}
+  .pgrid,.sgrid,.certs,.cgrid{grid-template-columns:1fr}
+  .xrow{grid-template-columns:1fr;gap:1rem}
+  .scol{border-right:none}
+  .ccol{border-right:none;border-bottom:1px solid var(--border)}
+  .cta-section{padding:4rem 1.5rem}
+  footer{flex-direction:column;gap:.5rem;padding:1.5rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">APF.</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+  </ul>
+  <div class="nav-clocks">
+    <div class="clock-item">
+      <span class="clock-tz">PT</span>
+      <span class="clock-time" id="clock-pt">--:--</span>
+    </div>
+    <div style="width:1px;height:28px;background:var(--border)"></div>
+    <div class="clock-item">
+      <span class="clock-tz">ET</span>
+      <span class="clock-time" id="clock-et">--:--</span>
+    </div>
+    <div style="width:1px;height:28px;background:var(--border)"></div>
+    <div class="clock-item">
+      <span class="clock-tz">GMT</span>
+      <span class="clock-time" id="clock-gmt">--:--</span>
+    </div>
+    <div style="width:1px;height:28px;background:var(--border)"></div>
+    <div class="clock-item">
+      <span class="clock-tz">CET</span>
+      <span class="clock-time" id="clock-cet">--:--</span>
+    </div>
+  </div>
+  <a href="mailto:paul.fadebayo@gmail.com" class="nav-cta">Get in touch</a>
+</nav>
+
+<!-- SCROLLING TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item">Data Analyst</span>
+    <span class="ticker-item">Product Analyst</span>
+    <span class="ticker-item">AI Systems Builder</span>
+    <span class="ticker-item">Operations Analyst</span>
+    <span class="ticker-item">BI Specialist</span>
+    <span class="ticker-item">Multi-Agent Architect</span>
+    <span class="ticker-item">Product Operations</span>
+    <span class="ticker-item">Financial Modelling</span>
+    <span class="ticker-item">Data Visualisation</span>
+    <span class="ticker-item">ETL Engineering</span>
+    <span class="ticker-item">Business Intelligence</span>
+    <span class="ticker-item">System Analyst</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">Data Analyst</span>
+    <span class="ticker-item">Product Analyst</span>
+    <span class="ticker-item">AI Systems Builder</span>
+    <span class="ticker-item">Operations Analyst</span>
+    <span class="ticker-item">BI Specialist</span>
+    <span class="ticker-item">Multi-Agent Architect</span>
+    <span class="ticker-item">Product Operations</span>
+    <span class="ticker-item">Financial Modelling</span>
+    <span class="ticker-item">Data Visualisation</span>
+    <span class="ticker-item">ETL Engineering</span>
+    <span class="ticker-item">Business Intelligence</span>
+    <span class="ticker-item">System Analyst</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-main">
+    <div class="eyebrow">Open to opportunities · Global Remote</div>
+    <h1 class="hero-name">Adebayo<br>Paul Femi</h1>
+    <div class="hero-body">
+      <p class="hero-desc">7 years turning raw data into strategy. I build multi-agent AI systems, lead product analytics operations, and architect intelligence frameworks that drive real decisions at scale.</p>
+      <div class="hero-meta">
+        <div class="actions">
+          <a href="#projects" class="btn-dark">View my work</a>
+          <a href="https://github.com/TechPaulFrey" target="_blank" class="btn-ghost">GitHub ↗</a>
+          <a href="mailto:paul.fadebayo@gmail.com" class="btn-ghost">Contact</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-n">7+</div>
+      <div class="stat-l">Years Experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">1.0</div>
+      <div class="stat-l">AI Benchmark Score</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">95%</div>
+      <div class="stat-l">Processing Time Saved</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">15%</div>
+      <div class="stat-l">Avg. Retention Gained</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section class="wrap" id="about">
+  <div class="lbl">Introduction</div>
+  <h2 class="sh">More than<br>a <em>data person.</em></h2>
+  <div class="about-grid reveal">
+    <div>
+      <p class="about-lead">I blend the critical thinking of a Data Analyst, the strategic insight of a BI Specialist, the structure of a Systems Analyst, and the operational agility of a manager.</p>
+      <div class="about-body">
+        <p>With a Bachelor's degree in Physics from FUTA and a strong foundation in AI/ML, data architecture, and system integration, I specialise in analysing, designing, and maintaining digital solutions that enhance business performance.</p>
+        <p>I've worked across public health data systems in Nigeria, fintech intelligence operations in the US, branded analytics programmes in the UK, and built open-source AI systems benchmarked to perfection.</p>
+        <p>Currently pursuing an MSc in Data Science while operating at the intersection of product, data, and AI.</p>
+      </div>
+    </div>
+    <div>
+      <div class="drow"><div class="dk">Location</div><div class="dv">Nigeria</div></div>
+      <div class="drow"><div class="dk">Email</div><div class="dv"><a href="mailto:paul.fadebayo@gmail.com">paul.fadebayo@gmail.com</a></div></div>
+      <div class="drow"><div class="dk">GitHub</div><div class="dv"><a href="https://github.com/TechPaulFrey" target="_blank">github.com/TechPaulFrey</a></div></div>
+      <div class="drow"><div class="dk">LinkedIn</div><div class="dv"><a href="https://linkedin.com" target="_blank">Adebayo Paul Femi</a></div></div>
+      <div class="drow"><div class="dk">Education</div><div class="dv">B.Sc. Physics — FUTA, 2018<br><span style="color:var(--muted);font-size:.82rem">MSc. Data Science (In-View)</span></div></div>
+      <div class="drow"><div class="dk">Status</div><div class="dv open">Open to opportunities</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section class="wrap" id="experience">
+  <div class="lbl">Work History</div>
+  <div class="reveal">
+    <div class="xrow">
+      <div><div class="xdate">Current</div><div class="xco">LexHive (Demandlane)</div><div class="xloc">United States · Remote</div></div>
+      <div>
+        <div class="xrole">Senior Product Operations Analyst</div>
+        <ul class="xbullets">
+          <li>Lead root-cause analysis of messaging performance issues — deliverability, spam blocking, carrier failures — and drive implementation of solutions.</li>
+          <li>Monitor KPIs including contact rate, remarketing, deliverability %, spam block rate, and conversion metrics to guide daily operations.</li>
+          <li>Apply AI/ML-assisted analysis to detect anomalies and uncover hidden performance patterns.</li>
+          <li>Design and evaluate A/B tests, translating results into data-backed optimisations for product and growth stakeholders.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="xrow">
+      <div><div class="xdate">2025 – 2026</div><div class="xco">Prominate</div><div class="xloc">United Kingdom</div></div>
+      <div>
+        <div class="xrole">Manager, Analyst & Communications</div>
+        <ul class="xbullets">
+          <li>Operate as an authorised licensee delivering branded promotional and gifting solutions aligned with Prominate's standards.</li>
+          <li>Lead local market operations, project execution, client coordination, and performance reporting.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="xrow">
+      <div><div class="xdate">2023 – 2025</div><div class="xco">Western Union</div><div class="xloc">Contract · Remote</div></div>
+      <div>
+        <div class="xrole">Field Intelligence Officer</div>
+        <ul class="xbullets">
+          <li>Conducted in-depth analysis at agent locations, evaluating brand visibility, agent knowledge, and customer satisfaction.</li>
+          <li>Gathered intelligence through mystery shopping and structured field observation methodologies.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="xrow">
+      <div><div class="xdate">2024 – 2026</div><div class="xco">ColouredSpaces</div><div class="xloc">Nigeria</div></div>
+      <div>
+        <div class="xrole">Manager, Project Lead Analyst & Operations</div>
+        <ul class="xbullets">
+          <li>Aligned sales, marketing, customer success, finance, and administration across the full customer lifecycle to drive growth.</li>
+          <li>Oversaw project planning, execution, and delivery — conducting analysis to identify requirements, risks, and opportunities.</li>
+          <li>Developed and implemented operational policies, procedures, and strategies; monitored KPIs to assess performance.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="xrow">
+      <div><div class="xdate">2021 – 2023</div><div class="xco">CIHP</div><div class="xloc">Nigeria</div></div>
+      <div>
+        <div class="xrole">Data Analyst</div>
+        <ul class="xbullets">
+          <li>Integrated M&E into routine project evaluation on the IRIS and PEARL projects at national scale.</li>
+          <li>Developed data visualisation dashboards, reducing stakeholder reporting time by 20%.</li>
+          <li>Delivered a 15% improvement in retention and 15% increase in conversion rates through data-driven insights.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="xrow">
+      <div><div class="xdate">2019 – 2021</div><div class="xco">MTS Digitals</div><div class="xloc">Nigeria</div></div>
+      <div>
+        <div class="xrole">Data Analyst</div>
+        <ul class="xbullets">
+          <li>Conducted data mining, modelling, and business/financial model creation for clients and product owners.</li>
+          <li>Built and maintained Power BI dashboards for KPI tracking; used SQL and Python for large-scale analysis.</li>
+          <li>Converted data into actionable insights by predicting and modelling future outcomes.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ACHIEVEMENTS -->
+<section class="wrap" id="achievements">
+  <div class="lbl">Impact & Results</div>
+  <h2 class="sh">Key <em>achievements.</em></h2>
+  <div class="reveal">
+
+    <!-- LexHive -->
+    <div class="xrow">
+      <div>
+        <div class="xdate">Current</div>
+        <div class="xco">LexHive (Demandlane)</div>
+        <div class="xloc">Senior Product Ops Analyst</div>
+      </div>
+      <div>
+        <div class="xrole" style="font-size:1.15rem;margin-bottom:1.25rem">Product & Messaging Performance</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Deliverability</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">95%</div>
+            <div style="font-size:.83rem;color:#5a5a58;font-weight:300;line-height:1.5">Achieved 95% deliverability rate through structured A/B testing across messaging campaigns — reducing spam block rate and improving carrier routing outcomes.</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">AI / LLM Optimisation</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">LLM ↑</div>
+            <div style="font-size:.83rem;color:#5a5a58;font-weight:300;line-height:1.5">Improved LLM response quality at LexHive by refining prompt architecture and applying AI/ML-assisted anomaly detection to surface performance patterns and guide model tuning.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prominate -->
+    <div class="xrow">
+      <div>
+        <div class="xdate">2025 – 2026</div>
+        <div class="xco">Prominate</div>
+        <div class="xloc">Manager, Analyst & Comms</div>
+      </div>
+      <div>
+        <div class="xrole" style="font-size:1.15rem;margin-bottom:1.25rem">Reporting Infrastructure</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Automated Reporting</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Always On</div>
+            <div style="font-size:.83rem;color:#5a5a58;font-weight:300;line-height:1.5">Built and deployed automated reporting channels that deliver live performance data to directors and stakeholders — enabling on-demand report access at any time without manual intervention.</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Executive Dashboards</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Real-Time</div>
+            <div style="font-size:.83rem;color:#5a5a58;font-weight:300;line-height:1.5">Designed and deployed stakeholder-facing dashboards giving directors full visibility into campaign performance, operational metrics, and KPIs in real time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ColouredSpaces -->
+    <div class="xrow">
+      <div>
+        <div class="xdate">2024 – 2026</div>
+        <div class="xco">ColouredSpaces</div>
+        <div class="xloc">Mgr. Project Lead & Ops</div>
+      </div>
+      <div>
+        <div class="xrole" style="font-size:1.15rem;margin-bottom:1.25rem">Operational & Commercial Impact</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Cost Reduction</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">₦70M</div>
+            <div style="font-size:.83rem;color:#5a5a58;font-weight:300;line-height:1.5">Reduced operational costs by ₦70 million over 16 months through process re-engineering, waste elimination, and resource optimisation.</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Reporting Channels</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Created</div>
+            <div style="font-size:.83rem;color:#5a5a58;font-weight:300;line-height:1.5">Established structured reporting channels across departments, ensuring consistent and transparent flow of operational intelligence to leadership.</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Marketing Targets</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Automated</div>
+            <div style="font-size:.83rem;color:#5a5a58;font-weight:300;line-height:1.5">Built automated forecasting models that generate data-driven targets for marketers — improving campaign precision, accountability, and marketing ROI.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section class="wrap" id="projects">
+  <div class="lbl">Selected Work</div>
+  <h2 class="sh">Projects that<br><em>actually shipped.</em></h2>
+  <div class="reveal">
+    <div class="pfeat">
+      <div class="pfl">
+        <div class="ptag">AI Systems · Emergency Management · Open Source</div>
+        <div class="pname">NEMA Emergency Dispatch Planning System</div>
+        <p class="pdesc">A multi-agent AI system for national emergency dispatch coordination across 8 Nigerian cities — handling 89 incidents, 3 shifts, and cross-city resource conflict detection. Proves a team of specialised AI agents far outperforms a single overloaded model on complex operational tasks at scale.</p>
+        <div class="techs">
+          <span class="tech">Python</span><span class="tech">Docker</span>
+          <span class="tech">SwarmBench</span><span class="tech">Harbor</span>
+          <span class="tech">Multi-Agent AI</span><span class="tech">GitHub</span>
+        </div>
+        <a href="https://github.com/TechPaulFrey/nema-emergency-dispatch" target="_blank" class="plink">View on GitHub ↗</a>
+      </div>
+      <div class="pfr">
+        <div>
+          <div class="score-lbl">SwarmBench Verifier Score</div>
+          <div class="score-n">1.0</div>
+          <p class="score-sub">Perfect score on first run. Reward: 1.0 · Mean: 1.000 · Trials: 1 · Exceptions: 0. Full project published as open source for the AI and emergency management community.</p>
+          <div class="score-tags">
+            <span class="stag">Open Source</span>
+            <span class="stag">8 Cities</span>
+            <span class="stag">89 Incidents</span>
+            <span class="stag">Perfect Score</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pgrid">
+
+      <!-- COHORT ANALYSIS — FULL-WIDTH CARD -->
+      <div class="pcard" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
+        <div>
+          <div class="ptag">E-Commerce · Retention Analytics · Python</div>
+          <div class="pname">E-Commerce Customer Retention: Cohort Analysis</div>
+          <p class="pdesc">Analysed customer retention trends for an e-commerce business by segmenting ~500,000 UCI Online Retail transactions into monthly cohorts. Identified drop-off points, systemic retention failures, and the best-performing acquisition periods to guide lifecycle strategy.</p>
+          <div class="techs">
+            <span class="tech">Python</span><span class="tech">Pandas</span><span class="tech">NumPy</span>
+            <span class="tech">Matplotlib</span><span class="tech">Seaborn</span>
+            <span class="tech">Cohort Analysis</span><span class="tech">UCI Dataset</span>
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.25rem">
+            <a href="https://colab.research.google.com/drive/1NaQ6o0V2_P0vlslHWaPVlSfut-etmV51?usp=sharing" target="_blank" class="plink" style="font-size:.75rem;padding:.5rem 1rem">View Python Analysis ↗</a>
+            <a href="https://archive.ics.uci.edu/dataset/352/online+retail" target="_blank" class="plink" style="font-size:.75rem;padding:.5rem 1rem;border-color:var(--border);color:var(--muted)">UCI Dataset ↗</a>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Key Finding</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Sharp Drop</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Most customers did not return after first purchase — a systemic retention issue</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Dataset</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">500K+</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Transactions from UK retailer, Dec 2010 – Dec 2011</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Best Cohort</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Nov 2011</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Highest retention — linked to targeted promotions & product mix</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Peak Acquisition</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">December</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Seasonal spike in new customers driven by holiday promotions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSURANCE RATE ANALYSIS — FULL-WIDTH CARD -->
+      <div class="pcard" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
+        <div>
+          <div class="ptag">Insurance · Regression Analysis · Excel</div>
+          <div class="pname">Insurance Rate Analysis & Insight Report</div>
+          <p class="pdesc">Analysed 1,338 customer records to identify the key drivers of insurance premium costs. Built a data story and agent guide using regression, correlation, and univariate analysis — answering management questions on gender, region, smoking, age, and BMI impact on rates.</p>
+          <div class="techs">
+            <span class="tech">Excel</span><span class="tech">PowerPoint</span>
+            <span class="tech">Regression Analysis</span><span class="tech">Correlation</span>
+            <span class="tech">Univariate Analysis</span><span class="tech">Bivariate Analysis</span>
+            <span class="tech">One-Hot Encoding</span>
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.25rem">
+            <a href="https://docs.google.com/spreadsheets/d/1RD3G6X59QhG-Wk6zjnvlp3cUhLWn2mbL/edit?usp=sharing&ouid=112874649632081605324&rtpof=true&sd=true" target="_blank" class="plink" style="font-size:.75rem;padding:.5rem 1rem">View Analysis ↗</a>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Biggest Rate Driver</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Smoking</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">+$23,848 per smoker — 4× higher on average than non-smokers</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Avg. Customer Rate</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">$13,270</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Across 1,338 records · Avg age 39 · Avg BMI 30.6</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Per-Unit Cost Impact</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">+$339 / BMI</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Age +$257 · Children +$476 · BMI +$339 per unit increase</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Highest Cost Region</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Southeast</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">~$14,700 avg · Males pay ~10% more than females</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- E-BIKE ANALYSIS — FULL-WIDTH CARD -->
+      <div class="pcard" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
+        <div>
+          <div class="ptag">Bike Share · Revenue Analytics · SQL · Power BI</div>
+          <div class="pname">E-Bike Analysis & Dashboard Development</div>
+          <p class="pdesc">Built an end-to-end analytics pipeline for Toman Bike Share — consolidating two years of ride data via SQL, enriching with cost tables, and delivering a Power BI dashboard covering hourly revenue, seasonal performance, profit margins, and rider segmentation. Concluded with a data-backed pricing strategy recommendation.</p>
+          <div class="techs">
+            <span class="tech">SQL</span><span class="tech">Power BI</span><span class="tech">Excel</span>
+            <span class="tech">UNION Joins</span><span class="tech">Revenue Modelling</span>
+            <span class="tech">Pricing Strategy</span><span class="tech">Rider Segmentation</span>
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.25rem">
+            <a href="https://app.powerbi.com/view?r=eyJrIjoiOTVmM2JiNTQtYjYzZC00YmFmLWJjYTMtMGYyMTBmMzI3N2M2IiwidCI6IjBhNTYzYjE2LTQzNzctNDIwMi1hYzFhLWVlMDBhYTk3YTJmZSJ9&pageName=fd166fa8b2ac43768317" target="_blank" class="plink" style="font-size:.75rem;padding:.5rem 1rem">View Live Dashboard ↗</a>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">YoY Growth</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">+24%</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Total rides Year 0 → Year 1 · Casual riders growing fastest</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Revenue Uplift</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">+18%</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Projected annual revenue increase via strategic pricing adjustments</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Peak Revenue Hours</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">8AM · 5–6PM</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Commuter-driven peaks — target for surge pricing strategy</div>
+          </div>
+          <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
+            <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Registered Riders</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">81%</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Of total rides · 75% of revenue due to discounted membership pricing</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard">
+        <div class="ptag">Health Tech · Systems</div>
+        <div class="pname">MyCloudMedic Hospital Management System</div>
+        <p class="pdesc">Cloud-based and local server-based solution for hospitals, clinics, pharmacies, and laboratories. Contributed to data architecture, analytics, and system design at MTS Digitals.</p>
+        <div class="techs"><span class="tech">Data Architecture</span><span class="tech">Health Tech</span><span class="tech">System Analytics</span></div>
+        <a href="https://www.mycloudmedic.com" target="_blank" class="plink" style="font-size:.75rem;padding:.5rem 1rem">Visit Site ↗</a>
+      </div>
+    </div>
+
+    <!-- MEDIUM ARTICLE — FULL-WIDTH FEATURE -->
+    <div style="margin-top:1.5rem;border:1px solid var(--border);border-radius:4px;overflow:hidden;display:grid;grid-template-columns:1fr auto;align-items:center;gap:0">
+      <div style="padding:2.5rem 3rem;border-right:1px solid var(--border)">
+        <div class="ptag" style="margin-bottom:.5rem">Published Article · Medium · Product Analytics</div>
+        <div style="font-family:'Times New Roman',Times,serif;font-size:1.5rem;font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:.75rem">
+          Architecting Product Operational Intelligence: Building AI Systems That Transform Pipeline Data Into Executive-Grade Clarity
+        </div>
+        <p style="font-size:.88rem;color:#5a5a58;line-height:1.7;font-weight:300;max-width:680px">
+          A technical deep-dive into building AI systems that transform raw pipeline data into executive-grade clarity — covering multi-agent architecture, KPI frameworks, anomaly detection, and data-driven product operations strategy.
+        </p>
+      </div>
+      <div style="padding:2.5rem 3rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:var(--gray);min-width:220px;height:100%">
+        <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-align:center">Read the article</div>
+        <a href="https://medium.com/@paul.fadebayo/what-happens-when-you-push-a-single-ai-past-its-limits-how-i-built-a-multi-agent-dispatch-system-90ed76f3b51a" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;background:var(--black);border-radius:50%;color:var(--white);font-size:1.2rem;text-decoration:none;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">↗</a>
+        <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.08em;color:var(--muted);text-align:center">Click to read<br>my article</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section class="wrap" id="skills">
+  <div class="lbl">Technical Expertise</div>
+  <h2 class="sh">Tools &amp; <em>capabilities.</em></h2>
+  <div class="sgrid reveal">
+    <div class="scol"><div class="shead">Data Analysis & BI</div><div class="sitems"><div class="si">Power BI</div><div class="si">SQL</div><div class="si">Python</div><div class="si">Excel</div><div class="si">Databricks</div><div class="si">Apache Spark</div><div class="si">ETL Pipelines</div><div class="si">Statistical Analysis</div><div class="si">Dashboard Development</div></div></div>
+    <div class="scol"><div class="shead">AI & Multi-Agent Systems</div><div class="sitems"><div class="si">Multi-Agent Architecture</div><div class="si">AI System Design</div><div class="si">Prompt Engineering</div><div class="si">SwarmBench / Harbor</div><div class="si">Docker</div><div class="si">Agent Orchestration</div><div class="si">Python AI Pipelines</div></div></div>
+    <div class="scol"><div class="shead">Cloud & Infrastructure</div><div class="sitems"><div class="si">AWS Redshift & SageMaker</div><div class="si">Google Cloud Platform</div><div class="si">Microsoft Azure</div><div class="si">Microsoft Fabric</div><div class="si">Cloud Zero</div><div class="si">APIs</div></div></div>
+    <div class="scol"><div class="shead">Product & Systems Analytics</div><div class="sitems"><div class="si">SAP S/4HANA</div><div class="si">SAP Analytics Cloud</div><div class="si">A/B Testing</div><div class="si">Forecasting</div><div class="si">Predictive Modelling</div><div class="si">UAT</div><div class="si">Zapier · N8n · Converzate</div></div></div>
+    <div class="scol"><div class="shead">CRM & Marketing Analytics</div><div class="sitems"><div class="si">Salesforce</div><div class="si">HubSpot</div><div class="si">Zoho CRM</div><div class="si">Mailchimp</div><div class="si">Customer Segmentation</div><div class="si">Cohort Analysis</div><div class="si">Funnel Optimization</div></div></div>
+    <div class="scol"><div class="shead">Operations & Project Mgmt</div><div class="sitems"><div class="si">Jira · Asana · ClickUp</div><div class="si">Notion · Confluence</div><div class="si">Agile / Scrum</div><div class="si">Lean / Kanban</div><div class="si">Business Process Re-engineering</div><div class="si">Stakeholder Management</div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTS -->
+<section class="wrap" id="certifications">
+  <div class="lbl">Credentials</div>
+  <h2 class="sh">Certifications &amp;<br><em>qualifications.</em></h2>
+
+  <!-- Featured / Non-CFI certs -->
+  <div class="certs reveal" style="margin-bottom:3rem">
+    <div class="ccard"><div class="cnum">01</div><div class="ctitle"><a href="http://credentials.corporatefinanceinstitute.com/b2a3abdb-ce1a-4ec0-8a8a-890a4e354ba3#acc.IMexVN1T" target="_blank" style="color:var(--black);text-decoration:underline;text-underline-offset:3px">Financial Modelling & Valuation Analyst (FMVA)® ↗</a></div><div class="corg">Corporate Finance Institute — Canada</div></div>
+    <div class="ccard"><div class="cnum">02</div><div class="ctitle">Business Intelligence & Data Analyst (BIDA)™</div><div class="corg">Corporate Finance Institute — Canada</div></div>
+    <div class="ccard"><div class="cnum">03</div><div class="ctitle">Product Analyst — SAP Hybris</div><div class="corg">Pro5</div></div>
+    <div class="ccard"><div class="cnum">04</div><div class="ctitle">Monitoring & Evaluation</div><div class="corg">University of Washington</div></div>
+    <div class="ccard"><div class="cnum">05</div><div class="ctitle">Business Analyst (In-View)</div><div class="corg">International Institute of Business Analysis</div></div>
+    <div class="ccard"><div class="cnum">06</div><div class="ctitle">MSc. Data Science (In-View)</div><div class="corg">Postgraduate Programme</div></div>
+  </div>
+
+  <!-- CFI Full Wallet -->
+  <div class="reveal">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
+      <div>
+        <div class="lbl" style="margin-bottom:.2rem">Corporate Finance Institute</div>
+        <div style="font-family:'Times New Roman',Times,serif;font-size:1.4rem;font-weight:600;letter-spacing:-.02em">47 Completed Courses</div>
+      </div>
+      <a href="https://credentials.corporatefinanceinstitute.com/profile/pauladebayo412095/wallet" target="_blank" class="plink" style="font-size:.72rem;padding:.45rem 1rem">View Full Wallet ↗</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem">
+      <div class="cert-chip">Applied Machine Learning Algorithms</div>
+      <div class="cert-chip">Mint Your Own NFT Practice Lab</div>
+      <div class="cert-chip">Data Analysis in Excel</div>
+      <div class="cert-chip">Advanced Power BI</div>
+      <div class="cert-chip">Data Prep for Machine Learning in Python</div>
+      <div class="cert-chip">Fundamentals of Data Analysis in Excel</div>
+      <div class="cert-chip">Statistics Fundamentals</div>
+      <div class="cert-chip">Classification — Fundamentals & Practical Applications</div>
+      <div class="cert-chip">Power Query Fundamentals</div>
+      <div class="cert-chip">Data Science and Machine Learning Fundamentals</div>
+      <div class="cert-chip">Regression Analysis — Fundamentals & Practical Applications</div>
+      <div class="cert-chip">Modelling Risk with Monte Carlo Simulation</div>
+      <div class="cert-chip">Power BI Fundamentals</div>
+      <div class="cert-chip">Python Fundamentals</div>
+      <div class="cert-chip">Power BI Financial Statements</div>
+      <div class="cert-chip">Tableau Fundamentals</div>
+      <div class="cert-chip">Tableau Trading Dashboard</div>
+      <div class="cert-chip">Power Pivot Fundamentals</div>
+      <div class="cert-chip">Loan Default Prediction with Machine Learning</div>
+      <div class="cert-chip">SQL Fundamentals</div>
+      <div class="cert-chip">Corporate & Business Strategy</div>
+      <div class="cert-chip">Business Valuation Modeling Part I</div>
+      <div class="cert-chip">Business Valuation Modeling Part II</div>
+      <div class="cert-chip">Scenario & Sensitivity Analysis</div>
+      <div class="cert-chip">Dashboards & Data Visualization</div>
+      <div class="cert-chip">Presentation of Financial Information</div>
+      <div class="cert-chip">PowerPoint & Pitchbooks</div>
+      <div class="cert-chip">Budgeting and Forecasting</div>
+      <div class="cert-chip">Monthly Cash Flow Modeling</div>
+      <div class="cert-chip">Financial Planning & Analysis (FP&A)</div>
+      <div class="cert-chip">Advanced Excel Formulas & Functions</div>
+      <div class="cert-chip">Accounting Principles and Standards</div>
+      <div class="cert-chip">Financial Analysis Fundamentals</div>
+      <div class="cert-chip">3-Statement Modeling</div>
+      <div class="cert-chip">Introduction to Business Intelligence</div>
+      <div class="cert-chip">Macabacus Fundamentals</div>
+      <div class="cert-chip">Math for Finance Professionals</div>
+      <div class="cert-chip">Capital IQ Fundamentals</div>
+      <div class="cert-chip">Corporate Finance Fundamentals</div>
+      <div class="cert-chip">Excel Fundamentals — Formulas for Finance</div>
+      <div class="cert-chip">Accounting Fundamentals</div>
+      <div class="cert-chip">Reading Financial Statements</div>
+      <div class="cert-chip">Professional Ethics</div>
+      <div class="cert-chip">Financial Modeling & Valuation Analyst (FMVA)®</div>
+      <div class="cert-chip">Business Intelligence & Data Analyst (BIDA)™</div>
+      <div class="cert-chip">Power BI Financial Statements</div>
+      <div class="cert-chip">Python Fundamentals</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="lbl">Get In Touch</div>
+    <div class="cta-headline reveal">Let's build<br>something <em>smart.</em></div>
+    <div class="cgrid reveal">
+      <div class="ccol">
+        <div class="cclbl">Email</div>
+        <div class="ccval"><a href="mailto:paul.fadebayo@gmail.com">paul.fadebayo@gmail.com</a></div>
+      </div>
+      <div class="ccol">
+        <div class="cclbl">GitHub</div>
+        <div class="ccval"><a href="https://github.com/TechPaulFrey" target="_blank">github.com/TechPaulFrey</a></div>
+      </div>
+      <div class="ccol">
+        <div class="cclbl">Timezone Availability</div>
+        <div class="ccval">Available across US, UK & Europe<br>
+          <span style="color:var(--muted);font-size:.82rem">PT · ET · GMT · CET</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:3rem"><a href="mailto:paul.fadebayo@gmail.com" class="btn-dark" style="font-size:.88rem;padding:.8rem 2rem">Send a message</a></div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">Adebayo Paul Femi · APF.</div>
+  <div class="fr">© 2026</div>
+</footer>
+
+<script>
+// LIVE CLOCKS
+function updateClocks(){
+  const now=new Date();
+  const fmt=tz=>new Intl.DateTimeFormat('en-US',{
+    timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false
+  }).format(now);
+  document.getElementById('clock-pt').textContent=fmt('America/Los_Angeles');
+  document.getElementById('clock-et').textContent=fmt('America/New_York');
+  document.getElementById('clock-gmt').textContent=fmt('Europe/London');
+  document.getElementById('clock-cet').textContent=fmt('Europe/Paris');
+}
+updateClocks();
+setInterval(updateClocks,1000);
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})
+},{threshold:.06});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
