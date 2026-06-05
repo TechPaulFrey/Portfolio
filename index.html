@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adebayo Paul Femi - Senior Product Analytics & AI Systems Leader</title>
+<title>Adebayo Paul Femi - Senior Product Analytics & AI Systems Architect</title>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -16,6 +16,14 @@ html{scroll-behavior:smooth}
   --muted:#9a9990;
   --green:#2d6a4f;
 }
+body.dark{
+  --white:#0e0e0d;
+  --black:#fafaf8;
+  --gray:#1a1a18;
+  --border:#2a2a28;
+  --muted:#6a6a68;
+  --green:#4ade80;
+}
 body{
   background:var(--white);
   color:var(--black);
@@ -24,7 +32,94 @@ body{
   font-weight:400;
   line-height:1.6;
   overflow-x:hidden;
+  transition:background .25s,color .25s;
 }
+
+/* WEATHER CANVAS */
+#weather-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+  opacity:0;transition:opacity 1s ease;
+}
+#weather-canvas.visible{opacity:1}
+
+/* Make sure all page content sits above canvas */
+nav,
+.ticker-wrap,
+.hero,
+.divider,
+section,
+.cta-section,
+footer,
+.modal-overlay{position:relative;z-index:1}
+.hero{z-index:1}
+
+/* DARK MODE TOGGLE */
+.theme-toggle{
+  display:flex;align-items:center;gap:.5rem;cursor:pointer;
+  background:none;border:1px solid var(--border);border-radius:100px;
+  padding:.35rem .75rem;transition:border-color .15s;flex-shrink:0;
+}
+.theme-toggle:hover{border-color:var(--black)}
+.theme-toggle-icon{font-size:.85rem;line-height:1;transition:transform .3s}
+.theme-toggle-lbl{
+  font-family:'Calibri',Calibri,Consolas,monospace;
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+}
+
+/* PROJECT MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:1.5rem;
+}
+.modal-overlay.open{display:flex}
+.modal-box{
+  background:var(--white);color:var(--black);
+  border:1px solid var(--border);border-radius:8px;
+  width:100%;max-width:720px;max-height:90vh;overflow-y:auto;
+  position:relative;
+}
+.modal-header{
+  padding:2.5rem 3rem 1.5rem;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem;
+}
+.modal-close{
+  background:none;border:1px solid var(--border);border-radius:50%;
+  width:36px;height:36px;cursor:pointer;font-size:1rem;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:border-color .15s,color .15s;
+}
+.modal-close:hover{border-color:var(--black);color:var(--black)}
+.modal-body{padding:2rem 3rem 2.5rem}
+.modal-section{margin-bottom:1.75rem}
+.modal-section:last-child{margin-bottom:0}
+.modal-section-lbl{
+  font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:.6rem;
+}
+.modal-section-text{font-size:.9rem;color:#5a5a58;line-height:1.8;font-weight:300}
+body.dark .modal-section-text{color:#a0a09e}
+.modal-outcomes{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.6rem;margin-top:.75rem}
+.modal-outcome{
+  padding:.75rem 1rem;background:var(--gray);border:1px solid var(--border);
+  border-radius:4px;font-size:.82rem;color:var(--black);font-weight:400;line-height:1.4;
+}
+.modal-outcome strong{
+  display:block;font-family:'Times New Roman',Times,serif;
+  font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.2rem;
+}
+.modal-footer{
+  padding:1.5rem 3rem;border-top:1px solid var(--border);
+  display:flex;gap:.75rem;flex-wrap:wrap;
+}
+
+/* Make project cards clickable */
+.pcard-clickable,.pfeat-clickable{cursor:pointer}
+.pcard-clickable:hover .pname,.pfeat-clickable:hover .pname{text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:4px}
+
 
 /* NAV */
 nav{
@@ -35,7 +130,9 @@ nav{
   backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
   gap:1.5rem;
+  transition:background .25s,border-color .25s;
 }
+body.dark nav{background:rgba(14,14,13,0.94)}
 .nav-logo{
   font-family:'Calibri',Calibri,Consolas,monospace;
   font-size:.75rem;color:var(--black);text-decoration:none;
@@ -119,6 +216,7 @@ nav{
   font-size:clamp(4.5rem,10vw,10.5rem);
   line-height:.92;letter-spacing:-.02em;font-weight:600;
   margin-bottom:3rem;
+  color:var(--black);
 }
 .hero-body{
   display:grid;grid-template-columns:1fr 1fr;gap:3rem;
@@ -127,6 +225,7 @@ nav{
 .hero-desc{
   font-size:1rem;color:#4a4a48;line-height:1.8;max-width:440px;font-weight:300;
 }
+body.dark .hero-desc{color:#a0a09e}
 .hero-meta{display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem}
 .actions{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
 .btn-dark{
@@ -142,7 +241,7 @@ nav{
 }
 .btn-ghost:hover{border-color:var(--black)}
 
-/* STATS — with context line */
+/* STATS - with context line */
 .stats-bar{display:flex;border-top:1px solid var(--border)}
 .stat{flex:1;padding:1.5rem 0;border-right:1px solid var(--border)}
 .stat:not(:first-child){padding-left:2rem}
@@ -159,6 +258,7 @@ nav{
 .stat-c{
   font-size:.7rem;color:#b0afa9;font-weight:300;margin-top:.35rem;line-height:1.4;
 }
+body.dark .stat-c{color:#6a6a68}
 
 /* SHARED */
 .divider{width:100%;height:1px;background:var(--border)}
@@ -182,6 +282,7 @@ nav{
 }
 .about-body{font-size:.92rem;color:#5a5a58;line-height:1.85;font-weight:300}
 .about-body p{margin-bottom:1rem}
+body.dark .about-body{color:#a0a09e}
 .drow{
   display:grid;grid-template-columns:140px 1fr;
   padding:1rem 0;border-bottom:1px solid var(--border);gap:1rem;
@@ -206,6 +307,7 @@ nav{
 .xbullets{list-style:none;display:grid;gap:.5rem}
 .xbullets li{font-size:.88rem;color:#5a5a58;line-height:1.65;padding-left:1.1rem;position:relative;font-weight:300}
 .xbullets li::before{content:'→';position:absolute;left:0;color:var(--border);font-size:.75rem;top:.1rem}
+body.dark .xbullets li{color:#a0a09e}
 
 /* PROJECTS */
 .pfeat{
@@ -223,6 +325,7 @@ nav{
   letter-spacing:-.02em;line-height:1.15;font-weight:600;margin-bottom:1rem;
 }
 .pdesc{font-size:.88rem;color:#5a5a58;line-height:1.75;margin-bottom:1.5rem;font-weight:300}
+body.dark .pdesc{color:#a0a09e}
 .techs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.75rem}
 .tech{
   font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;font-weight:400;
@@ -242,6 +345,7 @@ nav{
   font-size:7.5rem;line-height:.88;letter-spacing:-.05em;font-weight:700;color:var(--black);margin-bottom:1rem;
 }
 .score-sub{font-size:.82rem;color:#7a7a78;line-height:1.65;margin-bottom:1rem;font-weight:300}
+body.dark .score-sub{color:#9a9a98}
 .score-tags{display:flex;flex-wrap:wrap;gap:.4rem}
 .stag{
   font-size:.68rem;font-weight:500;padding:.3rem .75rem;
@@ -306,6 +410,33 @@ footer{
 .fl{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
 .fr{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.62rem;color:#ccc9c2}
 
+/* ARTICLE CARDS */
+.article-card{
+  display:flex;flex-direction:column;gap:.75rem;
+  padding:2rem;border:1px solid var(--border);border-radius:4px;
+  text-decoration:none;color:inherit;
+  transition:border-color .2s,transform .2s;
+  background:var(--white);
+}
+.article-card:hover{border-color:#b0afa9;transform:translateY(-2px)}
+.article-tag{
+  font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+.article-title{
+  font-family:'Times New Roman',Times,serif;
+  font-size:1.15rem;font-weight:600;letter-spacing:-.01em;line-height:1.3;color:var(--black);
+}
+.article-excerpt{
+  font-size:.85rem;color:#5a5a58;line-height:1.75;font-weight:300;flex:1;
+}
+body.dark .article-excerpt{color:#8a8a88}
+.article-cta{
+  font-family:'Calibri',Calibri,Consolas,monospace;
+  font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--black);font-weight:500;margin-top:.25rem;
+}
+
 /* SKILL CHIPS */
 .skill-primary{
   font-family:'Calibri',Calibri,Consolas,monospace;
@@ -340,11 +471,17 @@ footer{
 .reveal.in{opacity:1;transform:translateY(0)}
 
 /* RESPONSIVE */
+
+/* ── Tablet / small laptop (≤1024px) ── */
 @media(max-width:1024px){
   nav{padding:.9rem 1.5rem}
   .nav-links{display:none}
   .nav-clocks{display:none}
+  /* hide email CTA on tablet to save space, keep Get in touch */
+  .nav-email-cta{display:none}
 }
+
+/* ── Tablet portrait / large phone landscape (≤900px) ── */
 @media(max-width:900px){
   .hero{padding:0 1.5rem}
   .hero-body{grid-template-columns:1fr}
@@ -353,7 +490,8 @@ footer{
   .stat:nth-child(2n){border-right:none}
   .stat:nth-child(n+3){border-top:1px solid var(--border)}
   .wrap{padding:4rem 1.5rem}
-  .about-grid,.pfeat{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}
+  .pfeat{grid-template-columns:1fr}
   .pfl{border-right:none;border-bottom:1px solid var(--border)}
   .pgrid,.sgrid,.certs,.cgrid{grid-template-columns:1fr}
   .xrow{grid-template-columns:1fr;gap:1rem}
@@ -361,10 +499,129 @@ footer{
   .ccol{border-right:none;border-bottom:1px solid var(--border)}
   .cta-section{padding:4rem 1.5rem}
   footer{flex-direction:column;gap:.5rem;padding:1.5rem;text-align:center}
+  /* project inner grids → single column */
+  .pcard[style*="grid-template-columns:1fr 1fr"],
+  .pcard[style*="grid-template-columns: 1fr 1fr"]{
+    grid-template-columns:1fr !important;
+  }
+  /* article cards grid */
+  .article-card{padding:1.5rem}
+  /* modal */
+  .modal-header{padding:1.75rem 1.75rem 1.25rem}
+  .modal-body{padding:1.5rem 1.75rem 2rem}
+  .modal-footer{padding:1.25rem 1.75rem}
+  /* contact grid */
+  [style*="grid-template-columns:1fr 1.1fr"]{grid-template-columns:1fr !important}
+}
+
+/* ── Phone (≤600px) ── */
+@media(max-width:600px){
+  nav{padding:.75rem 1rem;gap:.75rem}
+  .nav-logo{font-size:.7rem}
+  .theme-toggle{padding:.3rem .6rem}
+  .theme-toggle-lbl{display:none}
+  /* hide email nav CTA entirely, keep only Get in touch */
+  .nav-cta:first-of-type{display:none}
+
+  .ticker-wrap{margin-top:56px}
+
+  .hero{padding:0 1rem}
+  .hero-main{padding:3rem 0 1.5rem}
+  .hero-name{
+    font-size:clamp(3rem,15vw,5rem);
+    margin-bottom:2rem;
+  }
+  .eyebrow{font-size:.6rem;margin-bottom:1.25rem}
+  .hero-desc{font-size:.92rem}
+  .hero-body{gap:1.5rem;padding:1.5rem 0 0}
+  .actions{gap:.5rem}
+  .btn-dark,.btn-ghost{font-size:.75rem;padding:.55rem 1.1rem}
+
+  .stats-bar{grid-template-columns:1fr 1fr}
+  .stat-n{font-size:2.2rem}
+  .stat:not(:first-child){padding-left:1rem}
+
+  .wrap{padding:3rem 1rem}
+  .sh{font-size:clamp(2rem,8vw,3rem)}
+
+  /* about */
+  .about-lead{font-size:1.2rem}
+  .about-body{font-size:.88rem}
+  .drow{grid-template-columns:100px 1fr}
+
+  /* experience */
+  .xrole{font-size:1.2rem}
+
+  /* projects - force all inner grids to single column */
+  .pfeat{grid-template-columns:1fr}
+  .pfl{padding:1.75rem}
+  .pfr{padding:1.75rem}
+  .pgrid{grid-template-columns:1fr;gap:1rem}
+  .pcard{padding:1.5rem}
+  .pname{font-size:1.15rem}
+
+  /* NEMA / PayGuard stat mini-grids inside pfr */
+  .pfr [style*="grid-template-columns:1fr 1fr"]{
+    grid-template-columns:1fr 1fr !important;
+    gap:.5rem !important;
+  }
+
+  /* all project cards with side-by-side layout → stack */
+  .pcard[style*="grid-template-columns"]{
+    grid-template-columns:1fr !important;
+    gap:1.5rem !important;
+  }
+
+  /* stat mini-cards inside project cards */
+  [style*="grid-template-columns:1fr 1fr"][style*="gap:.75rem"]{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  /* article cards */
+  .article-card{padding:1.25rem}
+  .article-title{font-size:1.05rem}
+
+  /* skills */
+  .skill-primary,.skill-secondary{font-size:.68rem;padding:.35rem .75rem}
+
+  /* certs */
+  .certs{grid-template-columns:1fr}
+  .cert-chip{font-size:.75rem}
+
+  /* modal */
+  .modal-box{border-radius:6px}
+  .modal-header{padding:1.25rem 1.25rem 1rem;gap:1rem}
+  .modal-body{padding:1.25rem}
+  .modal-footer{padding:1rem 1.25rem;flex-direction:column}
+  .modal-footer .plink{width:100%;justify-content:center}
+  .modal-outcomes{grid-template-columns:1fr 1fr}
+  .modal-section-text{font-size:.85rem}
+
+  /* contact form */
+  .cta-section{padding:3rem 1rem}
+  .cta-headline{font-size:clamp(2rem,8vw,3.5rem);margin-bottom:2.5rem}
+  [style*="grid-template-columns:1fr 1fr"][style*="gap:1rem"]{
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* ── Very small phones (≤380px) ── */
+@media(max-width:380px){
+  .hero-name{font-size:clamp(2.5rem,13vw,3.5rem)}
+  .stats-bar{grid-template-columns:1fr}
+  .stat{border-right:none}
+  .stat:nth-child(n+2){border-top:1px solid var(--border)}
+  .pfr [style*="grid-template-columns:1fr 1fr"]{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .modal-outcomes{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
+
+<!-- WEATHER CANVAS -->
+<canvas id="weather-canvas"></canvas>
 
 <!-- NAV -->
 <nav>
@@ -398,12 +655,16 @@ footer{
     </div>
   </div>
   <div style="display:flex;gap:.75rem;align-items:center;flex-shrink:0">
-    <a href="mailto:work@pauladebayo.com" class="nav-cta" style="border-color:var(--border);color:var(--muted)">work@pauladebayo.com</a>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+      <span class="theme-toggle-icon" id="theme-icon">☀</span>
+      <span class="theme-toggle-lbl" id="theme-lbl">Light</span>
+    </button>
+    <a href="mailto:work@pauladebayo.com" class="nav-cta nav-email-cta" style="border-color:var(--border);color:var(--muted)">work@pauladebayo.com</a>
     <a href="#contact" class="nav-cta">Get in touch</a>
   </div>
 </nav>
 
-<!-- TICKER — 3 identities only, duplicated for seamless loop -->
+<!-- TICKER - 3 identities only, duplicated for seamless loop -->
 <div class="ticker-wrap">
   <div class="ticker-track">
     <span class="ticker-item">Senior Product Analytics Leader</span>
@@ -435,7 +696,7 @@ footer{
     </div>
   </div>
 
-  <!-- STATS — numbers now have context lines so they mean something -->
+  <!-- STATS - numbers now have context lines so they mean something -->
   <div class="stats-bar">
     <div class="stat">
       <div class="stat-n">7+</div>
@@ -443,9 +704,9 @@ footer{
       <div class="stat-c">Across 4 industries &amp; 3 continents</div>
     </div>
     <div class="stat">
-      <div class="stat-n">1.0</div>
-      <div class="stat-l">SwarmBench Score</div>
-      <div class="stat-c">Multi-agent AI · 89 incident scenarios · zero exceptions</div>
+      <div class="stat-n">89</div>
+      <div class="stat-l">Incidents · Zero Failures</div>
+      <div class="stat-c">Multi-agent AI validated across 89 concurrent emergency scenarios</div>
     </div>
     <div class="stat">
       <div class="stat-n">95%</div>
@@ -689,8 +950,8 @@ footer{
   <h2 class="sh">Projects that<br><em>actually shipped.</em></h2>
   <div class="reveal">
 
-    <!-- NEMA — FEATURED PROJECT, FULLY REFRAMED -->
-    <div class="pfeat">
+    <!-- NEMA - FEATURED PROJECT -->
+    <div class="pfeat pfeat-clickable" onclick="openModal('nema')">
       <div class="pfl">
         <div class="ptag">AI Systems · Emergency Management · Open Source</div>
         <div class="pname">NEMA Emergency Dispatch Planning System</div>
@@ -706,30 +967,103 @@ footer{
           <span class="tech">Multi-Agent AI</span>
           <span class="tech">GitHub</span>
         </div>
-        <a href="https://github.com/TechPaulFrey/nema-emergency-dispatch" target="_blank" class="plink">View on GitHub ↗</a>
+        <a href="https://github.com/TechPaulFrey/nema-emergency-dispatch" target="_blank" class="plink" onclick="event.stopPropagation()">View on GitHub ↗</a>
       </div>
       <div class="pfr">
         <div>
-          <div class="score-lbl">SwarmBench Validation</div>
-          <div class="score-n">1.0</div>
+          <div class="score-lbl">System Architecture</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem">
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">8</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Cities Covered</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">89</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Concurrent Incidents</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">3</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Operational Shifts</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">0</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Unhandled Exceptions</div>
+            </div>
+          </div>
           <p class="score-sub">
-            Achieved production-standard benchmark score on SwarmBench, an open-source multi-agent evaluation framework, with zero exceptions across all 89 incident scenarios. Published openly to invite peer review and real-world stress testing by the AI community.
+            Each agent handles a distinct operational role - dispatch coordination, resource allocation, conflict detection, and shift handover - with no single model overloaded. Deployed and validated in a containerised environment against a structured multi-city incident corpus.
           </p>
           <div class="score-tags">
             <span class="stag">Open Source</span>
-            <span class="stag">8 Cities</span>
-            <span class="stag">89 Incidents</span>
-            <span class="stag">3 Shifts</span>
+            <span class="stag">Multi-Agent</span>
+            <span class="stag">Containerised</span>
             <span class="stag">Zero Exceptions</span>
           </div>
         </div>
+        <div style="margin-top:1.5rem;font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.08em;color:var(--muted)">Click anywhere to see full case study →</div>
+      </div>
+    </div>
+
+    <!-- PAYGUARD - FEATURED PROJECT -->
+    <div class="pfeat pfeat-clickable" onclick="openModal('payguard')" style="margin-top:1.5rem">
+      <div class="pfl">
+        <div class="ptag">Fintech · Fraud Detection · ML Systems · Risk Analytics</div>
+        <div class="pname">PayGuard - Transaction Risk Engine</div>
+        <p class="pdesc">
+          Built a production-grade fraud detection and risk scoring system aligned with CBN, Visa, and Mastercard compliance frameworks. Combines an ensemble ML layer (XGBoost, Random Forest, Logistic Regression) with a deterministic rules engine and a 3-zone blend scoring model calibrated against four real-world fraud datasets.<br><br>
+          Deployed as an interactive Streamlit application with single-transaction scoring, bulk upload analysis, KRI dashboards, and a Monte Carlo stress-testing module with configurable rule slip rates and VaR output.
+        </p>
+        <div class="techs">
+          <span class="tech">Python</span>
+          <span class="tech">Streamlit</span>
+          <span class="tech">XGBoost</span>
+          <span class="tech">Scikit-learn</span>
+          <span class="tech">Ensemble ML</span>
+          <span class="tech">Rules Engine</span>
+          <span class="tech">Monte Carlo</span>
+          <span class="tech">KRI Reporting</span>
+        </div>
+        <a href="https://github.com/TechPaulFrey" target="_blank" class="plink" onclick="event.stopPropagation()">View on GitHub ↗</a>
+      </div>
+      <div class="pfr">
+        <div>
+          <div class="score-lbl">System Performance</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem">
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">0.97</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">ROC-AUC</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">4</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Fraud Datasets</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">81</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Tests Passing</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">3</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">ML Models Ensemble</div>
+            </div>
+          </div>
+          <p class="score-sub">
+            Ensemble weights calibrated across PaySim, Credit Card, BAF, and Nigerian fintech data. Rules engine and ML scores blend across three risk zones - GREEN, AMBER, RED - with Monte Carlo VaR stress testing at configurable slip rates.
+          </p>
+          <div class="score-tags">
+            <span class="stag">CBN Aligned</span>
+            <span class="stag">Ensemble ML</span>
+            <span class="stag">Rules Engine</span>
+            <span class="stag">Nigerian Fintech</span>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.08em;color:var(--muted)">Click anywhere to see full case study →</div>
       </div>
     </div>
 
     <div class="pgrid">
 
       <!-- COHORT ANALYSIS -->
-      <div class="pcard" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
+      <div class="pcard pcard-clickable" onclick="openModal('cohort')" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
         <div>
           <div class="ptag">E-Commerce · Retention Analytics · Python</div>
           <div class="pname">E-Commerce Customer Retention: Cohort Analysis</div>
@@ -748,7 +1082,7 @@ footer{
           <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
             <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Key Finding</div>
             <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Sharp Drop</div>
-            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Most customers did not return after first purchase — a systemic retention issue</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Most customers did not return after first purchase - a systemic retention issue</div>
           </div>
           <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
             <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Dataset</div>
@@ -758,7 +1092,7 @@ footer{
           <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
             <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Best Cohort</div>
             <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">Nov 2011</div>
-            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Highest retention — linked to targeted promotions &amp; product mix</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Highest retention - linked to targeted promotions &amp; product mix</div>
           </div>
           <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
             <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Peak Acquisition</div>
@@ -769,7 +1103,7 @@ footer{
       </div>
 
       <!-- INSURANCE RATE ANALYSIS -->
-      <div class="pcard" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
+      <div class="pcard pcard-clickable" onclick="openModal('insurance')" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
         <div>
           <div class="ptag">Insurance · Regression Analysis · Excel</div>
           <div class="pname">Insurance Rate Analysis &amp; Insight Report</div>
@@ -809,7 +1143,7 @@ footer{
       </div>
 
       <!-- E-BIKE ANALYSIS -->
-      <div class="pcard" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
+      <div class="pcard pcard-clickable" onclick="openModal('bikeshare')" style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
         <div>
           <div class="ptag">Bike Share · Revenue Analytics · SQL · Power BI</div>
           <div class="pname">E-Bike Analysis &amp; Dashboard Development</div>
@@ -837,7 +1171,7 @@ footer{
           <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
             <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Peak Revenue Hours</div>
             <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:.4rem">8AM · 5–6PM</div>
-            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Commuter-driven peaks — target for surge pricing strategy</div>
+            <div style="font-size:.78rem;color:#5a5a58;font-weight:300;line-height:1.5">Commuter-driven peaks - target for surge pricing strategy</div>
           </div>
           <div style="padding:1.25rem;background:var(--gray);border-radius:4px;border:1px solid var(--border)">
             <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Registered Riders</div>
@@ -848,7 +1182,7 @@ footer{
       </div>
 
       <!-- MYCLOUDMEDIC -->
-      <div class="pcard">
+      <div class="pcard pcard-clickable" onclick="openModal('cloudmedic')">
         <div class="ptag">Health Tech · Systems</div>
         <div class="pname">MyCloudMedic Hospital Management System</div>
         <p class="pdesc">Cloud-based and local server-based solution for hospitals, clinics, pharmacies, and laboratories. Contributed to data architecture, analytics, and system design at MTS Digitals.</p>
@@ -862,21 +1196,39 @@ footer{
 
     </div>
 
-    <!-- MEDIUM ARTICLE — THOUGHT LEADERSHIP FEATURE -->
-    <div style="margin-top:1.5rem;border:1px solid var(--border);border-radius:4px;overflow:hidden;display:grid;grid-template-columns:1fr auto;align-items:center;gap:0">
-      <div style="padding:2.5rem 3rem;border-right:1px solid var(--border)">
-        <div class="ptag" style="margin-bottom:.5rem">Thought Leadership · Medium · Product Analytics</div>
-        <div style="font-family:'Times New Roman',Times,serif;font-size:1.5rem;font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:.75rem">
-          Architecting Product Operational Intelligence: Building AI Systems That Transform Pipeline Data Into Executive-Grade Clarity
-        </div>
-        <p style="font-size:.88rem;color:#5a5a58;line-height:1.7;font-weight:300;max-width:680px">
-          A technical deep-dive into building AI systems that transform raw pipeline data into executive-grade clarity — covering multi-agent architecture, KPI frameworks, anomaly detection, and data-driven product operations strategy.
-        </p>
-      </div>
-      <div style="padding:2.5rem 3rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:var(--gray);min-width:220px;height:100%">
-        <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-align:center">Read the article</div>
-        <a href="https://medium.com/@paul.fadebayo/what-happens-when-you-push-a-single-ai-past-its-limits-how-i-built-a-multi-agent-dispatch-system-90ed76f3b51a" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;background:var(--black);border-radius:50%;color:var(--white);font-size:1.2rem;text-decoration:none;transition:opacity .15s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">↗</a>
-        <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.08em;color:var(--muted);text-align:center">Published on Medium</div>
+    <!-- WRITING - MEDIUM ARTICLES -->
+    <div style="margin-top:1.5rem">
+      <div class="lbl" style="margin-bottom:1.25rem">Thought Leadership · Medium</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem">
+
+        <a href="https://medium.com/@paul.fadebayo/what-happens-when-you-push-a-single-ai-past-its-limits-how-i-built-a-multi-agent-dispatch-system-90ed76f3b51a" target="_blank" class="article-card">
+          <div class="article-tag">AI Systems · Multi-Agent Architecture</div>
+          <div class="article-title">What Happens When You Push a Single AI Past Its Limits: How I Built a Multi-Agent Dispatch System for Nigeria's Emergency Services</div>
+          <p class="article-excerpt">A deep-dive into why monolithic LLMs break under real operational pressure - and how role-based agent orchestration solves problems that single models can't.</p>
+          <div class="article-cta">Read on Medium ↗</div>
+        </a>
+
+        <a href="https://medium.com/@paul.fadebayo/what-if-the-most-accurate-model-isnt-always-the-most-useful-60baa7ff0e69" target="_blank" class="article-card">
+          <div class="article-tag">ML · Product Thinking</div>
+          <div class="article-title">What if the Most Accurate Model Isn't Always the Most Useful?</div>
+          <p class="article-excerpt">Accuracy is a metric. Usefulness is a decision. This piece unpacks when optimising for the wrong objective destroys value - and how to think differently about model evaluation.</p>
+          <div class="article-cta">Read on Medium ↗</div>
+        </a>
+
+        <a href="https://medium.com/@paul.fadebayo/the-physics-of-data-part-1-d811ccb7f34c" target="_blank" class="article-card">
+          <div class="article-tag">Data Science · Fundamentals</div>
+          <div class="article-title">The Physics of Data - Part 1</div>
+          <p class="article-excerpt">Drawing on a background in Physics to reframe how data behaves - patterns, forces, and the laws that govern how information moves through systems.</p>
+          <div class="article-cta">Read on Medium ↗</div>
+        </a>
+
+        <a href="https://medium.com/@paul.fadebayo/learning-database-strategy-cache-boundaries-3f4fdcc53de6" target="_blank" class="article-card">
+          <div class="article-tag">Engineering · Database Design</div>
+          <div class="article-title">Learning Database Strategy &amp; Cache Boundaries</div>
+          <p class="article-excerpt">A practitioner's notes on where databases end and caches begin - why the boundary matters more than either layer, and how to reason about it in real systems.</p>
+          <div class="article-cta">Read on Medium ↗</div>
+        </a>
+
       </div>
     </div>
 
@@ -968,7 +1320,7 @@ footer{
     <div class="ccard">
       <div class="cnum">01</div>
       <div class="ctitle"><a href="http://credentials.corporatefinanceinstitute.com/b2a3abdb-ce1a-4ec0-8a8a-890a4e354ba3#acc.IMexVN1T" target="_blank" style="color:var(--black);text-decoration:underline;text-underline-offset:3px">Financial Modelling &amp; Valuation Analyst (FMVA)® ↗</a></div>
-      <div class="corg">Corporate Finance Institute — Canada</div>
+      <div class="corg">Corporate Finance Institute - Canada</div>
     </div>
     <div class="ccard">
       <div class="cnum">02</div>
@@ -997,7 +1349,7 @@ footer{
     </div>
   </div>
 
-  <!-- CFI WALLET — NFT course removed -->
+  <!-- CFI WALLET - NFT course removed -->
   <div class="reveal">
     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
       <div>
@@ -1013,7 +1365,7 @@ footer{
       <div class="cert-chip">Data Prep for Machine Learning in Python</div>
       <div class="cert-chip">Fundamentals of Data Analysis in Excel</div>
       <div class="cert-chip">Statistics Fundamentals</div>
-      <div class="cert-chip">Classification — Fundamentals &amp; Practical Applications</div>
+      <div class="cert-chip">Classification - Fundamentals &amp; Practical Applications</div>
       <div class="cert-chip">Power Query Fundamentals</div>
       <div class="cert-chip">Data Science and Machine Learning Fundamentals</div>
       <div class="cert-chip">Regression Analysis - Fundamentals &amp; Practical Applications</div>
@@ -1123,8 +1475,427 @@ footer{
   <div class="fr">© 2026</div>
 </footer>
 
+<!-- PROJECT MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-section-lbl" id="modal-tag"></div>
+        <div style="font-family:'Times New Roman',Times,serif;font-size:1.75rem;font-weight:600;letter-spacing:-.02em;line-height:1.2;color:var(--black)" id="modal-title"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
 <script>
-// CONTACT FORM — mailto
+// ─── WEATHER CANVAS ENGINE ───
+const canvas  = document.getElementById('weather-canvas');
+const ctx     = canvas.getContext('2d');
+let W = 0, H = 0;
+let animFrame = null;
+let currentMode = null; // 'dark' | 'light' | null
+
+function resizeCanvas(){
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// ── SHOOTING STARS (dark mode) ──────────────────────────────────────────────
+const MAX_STARS   = 6;   // max active at once - realistic, not a laser show
+const stars       = [];
+
+function randBetween(a, b){ return a + Math.random() * (b - a); }
+
+function spawnStar(){
+  // Start from top edge or right edge, travel diagonally down-left (natural)
+  const fromTop    = Math.random() > 0.3;
+  const angle      = randBetween(25, 55);   // degrees below horizontal
+  const radAngle   = (angle * Math.PI) / 180;
+  const speed      = randBetween(380, 700); // px/s
+  const length     = randBetween(120, 280); // trail length px
+  const brightness = randBetween(0.55, 1.0);
+  const thickness  = randBetween(0.8, 1.8);
+
+  let x, y;
+  if(fromTop){
+    x = randBetween(W * 0.2, W * 1.1);
+    y = randBetween(-20, H * 0.35);
+  } else {
+    x = randBetween(W * 0.7, W + 20);
+    y = randBetween(-20, H * 0.2);
+  }
+
+  stars.push({ x, y, angle: radAngle, speed, length, brightness, thickness,
+               vx: -Math.cos(radAngle) * speed,
+               vy:  Math.sin(radAngle) * speed,
+               life: 0,           // seconds alive
+               maxLife: (length + W * 0.6) / speed,
+               dead: false });
+}
+
+let starSpawnTimer = 0;
+let starSpawnInterval = randBetween(0.6, 2.2); // seconds between spawns
+
+function drawStars(dt){
+  // Background - deep night sky, slight gradient
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0,   'rgba(6,6,14,0)');
+  bg.addColorStop(0.5, 'rgba(8,8,18,0)');
+  bg.addColorStop(1,   'rgba(10,8,22,0)');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Tiny static background stars (twinkle softly)
+  if(!drawStars._bgStars){
+    drawStars._bgStars = Array.from({length: 120}, () => ({
+      x: Math.random() * 1920,
+      y: Math.random() * 1080,
+      r: Math.random() * 1.2 + 0.2,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 1.5 + 0.5
+    }));
+  }
+  drawStars._bgStars.forEach(s => {
+    const alpha = 0.3 + 0.25 * Math.sin(s.phase + performance.now() * 0.001 * s.speed);
+    const nx = (s.x / 1920) * W;
+    const ny = (s.y / 1080) * H;
+    ctx.beginPath();
+    ctx.arc(nx, ny, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(220,220,255,${alpha})`;
+    ctx.fill();
+  });
+
+  // Shooting stars
+  starSpawnTimer += dt;
+  if(starSpawnTimer >= starSpawnInterval && stars.filter(s=>!s.dead).length < MAX_STARS){
+    spawnStar();
+    starSpawnTimer = 0;
+    starSpawnInterval = randBetween(0.8, 2.8);
+  }
+
+  stars.forEach(s => {
+    if(s.dead) return;
+    s.life += dt;
+    if(s.life > s.maxLife + 0.3){ s.dead = true; return; }
+
+    // Head position
+    const hx = s.x + s.vx * s.life;
+    const hy = s.y + s.vy * s.life;
+
+    // Fade in/out
+    const fadeIn  = Math.min(1, s.life / 0.08);
+    const fadeOut = Math.max(0, 1 - (s.life - s.maxLife) / 0.3);
+    const alpha   = s.brightness * fadeIn * fadeOut;
+
+    if(alpha <= 0) return;
+
+    // Tail - gradient from head back along travel direction
+    const tx = hx + Math.cos(s.angle) * s.length;  // tail tip (behind head)
+    const ty = hy - Math.sin(s.angle) * s.length;
+
+    const grad = ctx.createLinearGradient(hx, hy, tx, ty);
+    grad.addColorStop(0,   `rgba(255,255,255,${alpha})`);
+    grad.addColorStop(0.12,`rgba(200,210,255,${alpha * 0.7})`);
+    grad.addColorStop(0.4, `rgba(160,180,255,${alpha * 0.25})`);
+    grad.addColorStop(1,   `rgba(120,140,255,0)`);
+
+    ctx.save();
+    ctx.strokeStyle = grad;
+    ctx.lineWidth   = s.thickness;
+    ctx.lineCap     = 'round';
+    ctx.beginPath();
+    ctx.moveTo(hx, hy);
+    ctx.lineTo(tx, ty);
+    ctx.stroke();
+
+    // Bright head glow
+    const glow = ctx.createRadialGradient(hx, hy, 0, hx, hy, 4);
+    glow.addColorStop(0,   `rgba(255,255,255,${alpha * 0.9})`);
+    glow.addColorStop(0.4, `rgba(200,215,255,${alpha * 0.4})`);
+    glow.addColorStop(1,   `rgba(140,160,255,0)`);
+    ctx.beginPath();
+    ctx.arc(hx, hy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Cull dead stars
+  for(let i = stars.length - 1; i >= 0; i--){
+    if(stars[i].dead) stars.splice(i, 1);
+  }
+}
+
+// ── SUN / LIGHT MODE ────────────────────────────────────────────────────────
+let sunAngle = 0;
+let sunPulse = 0;
+
+function drawSun(dt){
+  sunAngle += dt * 0.04;   // very slow drift
+  sunPulse += dt * 0.8;
+
+  const cx = W * 0.82 + Math.sin(sunAngle * 0.7) * 18;
+  const cy = H * 0.14 + Math.cos(sunAngle * 0.5) * 10;
+  const r  = 38 + Math.sin(sunPulse) * 1.5;
+
+  // Outer atmosphere glow
+  const atm = ctx.createRadialGradient(cx, cy, r * 0.5, cx, cy, r * 5);
+  atm.addColorStop(0,   'rgba(255,220,100,0.06)');
+  atm.addColorStop(0.3, 'rgba(255,200,80,0.03)');
+  atm.addColorStop(1,   'rgba(255,180,60,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 5, 0, Math.PI * 2);
+  ctx.fillStyle = atm;
+  ctx.fill();
+
+  // Mid halo
+  const halo = ctx.createRadialGradient(cx, cy, r, cx, cy, r * 2.2);
+  halo.addColorStop(0,   'rgba(255,230,120,0.12)');
+  halo.addColorStop(0.5, 'rgba(255,210,90,0.05)');
+  halo.addColorStop(1,   'rgba(255,180,60,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 2.2, 0, Math.PI * 2);
+  ctx.fillStyle = halo;
+  ctx.fill();
+
+  // Sun disc
+  const disc = ctx.createRadialGradient(cx - r*0.2, cy - r*0.2, 0, cx, cy, r);
+  disc.addColorStop(0,   'rgba(255,248,200,0.22)');
+  disc.addColorStop(0.5, 'rgba(255,220,100,0.14)');
+  disc.addColorStop(1,   'rgba(255,180,60,0.06)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = disc;
+  ctx.fill();
+
+  // Rays - 8 soft shafts rotating slowly
+  const rayCount = 8;
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(sunAngle * 0.3);
+  for(let i = 0; i < rayCount; i++){
+    const a  = (i / rayCount) * Math.PI * 2;
+    const r1 = r * 1.35;
+    const r2 = r * 2.6 + Math.sin(sunPulse + i) * 8;
+    const w  = 0.07 + 0.015 * Math.sin(sunPulse * 0.7 + i);
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a - w) * r1, Math.sin(a - w) * r1);
+    ctx.lineTo(Math.cos(a)     * r2, Math.sin(a)     * r2);
+    ctx.lineTo(Math.cos(a + w) * r1, Math.sin(a + w) * r1);
+    ctx.closePath();
+    const rayAlpha = 0.04 + 0.015 * Math.sin(sunPulse + i * 0.8);
+    ctx.fillStyle = `rgba(255,220,100,${rayAlpha})`;
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+// ── ANIMATION LOOP ──────────────────────────────────────────────────────────
+let lastTime = null;
+
+function loop(ts){
+  if(!lastTime) lastTime = ts;
+  const dt = Math.min((ts - lastTime) / 1000, 0.05); // seconds, capped at 50ms
+  lastTime = ts;
+
+  ctx.clearRect(0, 0, W, H);
+
+  if(currentMode === 'dark')  drawStars(dt);
+  else if(currentMode === 'light') drawSun(dt);
+
+  animFrame = requestAnimationFrame(loop);
+}
+
+function startWeather(mode){
+  if(animFrame) cancelAnimationFrame(animFrame);
+  lastTime = null;
+  currentMode = mode;
+  if(mode === 'dark'){
+    // Clear static star cache on mode switch so they regenerate fresh
+    if(drawStars._bgStars) drawStars._bgStars = null;
+    stars.length = 0;
+    starSpawnTimer = 0;
+  }
+  canvas.classList.add('visible');
+  animFrame = requestAnimationFrame(loop);
+}
+
+function stopWeather(){
+  canvas.classList.remove('visible');
+  setTimeout(()=>{ if(animFrame){ cancelAnimationFrame(animFrame); animFrame = null; } ctx.clearRect(0,0,W,H); }, 1000);
+}
+
+// ─── DARK / LIGHT TOGGLE ───
+const savedTheme = localStorage.getItem('theme') || 'light';
+if(savedTheme === 'dark') applyDark();
+else applyLight();
+
+function applyDark(){
+  document.body.classList.add('dark');
+  const icon = document.getElementById('theme-icon');
+  const lbl  = document.getElementById('theme-lbl');
+  if(icon) icon.textContent = '☾';
+  if(lbl)  lbl.textContent  = 'Dark';
+  startWeather('dark');
+}
+function applyLight(){
+  document.body.classList.remove('dark');
+  const icon = document.getElementById('theme-icon');
+  const lbl  = document.getElementById('theme-lbl');
+  if(icon) icon.textContent = '☀';
+  if(lbl)  lbl.textContent  = 'Light';
+  stopWeather();
+}
+function toggleTheme(){
+  if(document.body.classList.contains('dark')){
+    applyLight(); localStorage.setItem('theme','light');
+  } else {
+    applyDark(); localStorage.setItem('theme','dark');
+  }
+}
+
+// ─── PROJECT DATA ───
+const projects = {
+  nema: {
+    tag: 'AI Systems · Emergency Management · Open Source',
+    title: 'NEMA Emergency Dispatch Planning System',
+    objective: 'Design a multi-agent AI architecture that could coordinate national emergency dispatch across 8 Nigerian cities simultaneously - handling incident triage, resource allocation, cross-city conflict detection, and shift handover without a single agent becoming a bottleneck.',
+    approach: 'Rather than building one large model, I assigned specialised agents to discrete operational tasks: a Dispatch Coordinator, Resource Allocator, Conflict Detector, and Shift Manager. Each agent operates within its domain, communicating through a shared state layer. The system was containerised with Docker and validated against a structured corpus of 89 concurrent incidents across 3 operational shifts - covering floods, road accidents, building collapses, and health emergencies across Lagos, Abuja, Kano, Ibadan, Port Harcourt, and other major cities.',
+    outcomes: [
+      { stat: '8', label: 'Cities Covered' },
+      { stat: '89', label: 'Incidents Handled' },
+      { stat: '3', label: 'Operational Shifts' },
+      { stat: '0', label: 'Unhandled Exceptions' },
+    ],
+    links: [
+      { label: 'View on GitHub ↗', href: 'https://github.com/TechPaulFrey/nema-emergency-dispatch' },
+      { label: 'Read the Article ↗', href: 'https://medium.com/@paul.fadebayo/what-happens-when-you-push-a-single-ai-past-its-limits-how-i-built-a-multi-agent-dispatch-system-90ed76f3b51a' },
+    ]
+  },
+  payguard: {
+    tag: 'Fintech · Fraud Detection · ML Systems · Risk Analytics',
+    title: 'PayGuard - Transaction Risk Engine',
+    objective: 'Build a production-grade fraud detection system for Nigerian fintech that combines ML scoring with a deterministic rules engine, calibrated against real-world fraud datasets and aligned with CBN, Visa, and Mastercard compliance frameworks.',
+    approach: 'Trained an ensemble of XGBoost, Random Forest, and Logistic Regression models across four fraud datasets (Nigerian fintech, PaySim, Credit Card, BAF) with weighted ensemble scoring. Built a rules engine covering six fraud patterns - high-value transactions, new-account velocity, crypto merchant combinations, late-night anomalies, and deviation from baseline. Scores blend across three risk zones (GREEN/AMBER/RED) using a 3-zone interpolation model. Deployed as a Streamlit app with single-transaction scoring, bulk CSV upload, live KRI dashboards, and a Monte Carlo stress-testing module with configurable rule slip rates and VaR output. Full 81-test suite covers rules logic, blend mathematics, tier boundaries, and model loading.',
+    outcomes: [
+      { stat: '0.97', label: 'ROC-AUC Score' },
+      { stat: '4', label: 'Fraud Datasets' },
+      { stat: '81', label: 'Tests Passing' },
+      { stat: '3', label: 'Risk Tiers' },
+    ],
+    links: [
+      { label: 'View on GitHub ↗', href: 'https://github.com/TechPaulFrey' },
+    ]
+  },
+  cohort: {
+    tag: 'E-Commerce · Retention Analytics · Python',
+    title: 'E-Commerce Customer Retention: Cohort Analysis',
+    objective: 'Identify the systemic retention failures in an e-commerce business by analysing 500,000+ transactions - pinpointing where customers drop off, which acquisition cohorts perform best, and what patterns correlate with repeat purchasing.',
+    approach: 'Segmented 541,909 UCI Online Retail transactions into monthly acquisition cohorts. Used Python (Pandas, NumPy) to compute cohort retention matrices, then visualised with Matplotlib and Seaborn. Identified the November 2011 cohort as the highest-retaining period and traced the cause to targeted promotions and product mix. December showed the highest acquisition volume driven by holiday demand but below-average long-term retention.',
+    outcomes: [
+      { stat: '500K+', label: 'Transactions Analysed' },
+      { stat: 'Nov 2011', label: 'Best Cohort' },
+      { stat: 'Dec', label: 'Peak Acquisition' },
+      { stat: '~0%', label: 'Avg Month-2 Retention' },
+    ],
+    links: [
+      { label: 'View Python Analysis ↗', href: 'https://colab.research.google.com/drive/1NaQ6o0V2_P0vlslHWaPVlSfut-etmV51?usp=sharing' },
+      { label: 'UCI Dataset ↗', href: 'https://archive.ics.uci.edu/dataset/352/online+retail' },
+    ]
+  },
+  insurance: {
+    tag: 'Insurance · Regression Analysis · Excel',
+    title: 'Insurance Rate Analysis & Insight Report',
+    objective: 'Answer management questions about what drives insurance premium variation across 1,338 customer records - quantifying the impact of smoking, BMI, age, gender, region, and number of dependents on final premium costs.',
+    approach: 'Built a full analytical workbook in Excel covering univariate, bivariate, and regression analysis. Applied one-hot encoding for categorical variables (region, smoking status). Regression modelling identified smoking as the dominant predictor (+$23,848 per smoker on average). Delivered findings as an executive-facing insight report with agent guidance on cross-sell targeting and risk tier segmentation.',
+    outcomes: [
+      { stat: '$23,848', label: 'Smoking Premium Uplift' },
+      { stat: '$13,270', label: 'Average Customer Rate' },
+      { stat: '+$339', label: 'Per BMI Unit' },
+      { stat: 'Southeast', label: 'Highest Cost Region' },
+    ],
+    links: [
+      { label: 'View Analysis ↗', href: 'https://docs.google.com/spreadsheets/d/1RD3G6X59QhG-Wk6zjnvlp3cUhLWn2mbL/edit?usp=sharing&ouid=112874649632081605324&rtpof=true&sd=true' },
+    ]
+  },
+  bikeshare: {
+    tag: 'Bike Share · Revenue Analytics · SQL · Power BI',
+    title: 'E-Bike Analysis & Dashboard Development',
+    objective: 'Build an end-to-end analytics pipeline for Toman Bike Share - consolidating two years of ride data, enriching with cost and pricing tables, and delivering a stakeholder-ready Power BI dashboard with a data-backed pricing strategy recommendation.',
+    approach: 'Used SQL UNION joins to consolidate two years of ride records, then enriched with a cost table to calculate margin per ride. Built a Power BI dashboard covering hourly revenue patterns, seasonal performance, profit margins, and registered vs casual rider segmentation. Identified 8AM and 5–6PM as the peak revenue windows (commuter-driven) and built a pricing recommendation targeting a projected 18% revenue uplift through surge pricing at those intervals.',
+    outcomes: [
+      { stat: '+24%', label: 'YoY Ride Growth' },
+      { stat: '+18%', label: 'Projected Revenue Uplift' },
+      { stat: '81%', label: 'Registered Riders' },
+      { stat: '8AM · 5–6PM', label: 'Peak Revenue Hours' },
+    ],
+    links: [
+      { label: 'View Live Dashboard ↗', href: 'https://app.powerbi.com/view?r=eyJrIjoiOTVmM2JiNTQtYjYzZC00YmFmLWJjYTMtMGYyMTBmMzI3N2M2IiwidCI6IjBhNTYzYjE2LTQzNzctNDIwMi1hYzFhLWVlMDBhYTk3YTJmZSJ9&pageName=fd166fa8b2ac43768317' },
+    ]
+  },
+  cloudmedic: {
+    tag: 'Health Tech · Systems Architecture',
+    title: 'MyCloudMedic Hospital Management System',
+    objective: 'Contribute to the data architecture, analytics layer, and system design for a cloud-based hospital management platform serving hospitals, clinics, pharmacies, and laboratories across Nigeria.',
+    approach: 'Working within MTS Digitals, contributed to the data model design for patient records, pharmacy inventory, lab results, and billing. Built reporting modules for operational KPIs and contributed to system analytics features enabling facility managers to track throughput, stock levels, and clinical outcomes. The platform operates on both cloud and local server deployments to handle variable internet connectivity across Nigerian healthcare settings.',
+    outcomes: [
+      { stat: 'Cloud + Local', label: 'Deployment Modes' },
+      { stat: '4', label: 'Facility Types Served' },
+      { stat: 'Live', label: 'Production Status' },
+      { stat: 'NG', label: 'Market Focus' },
+    ],
+    links: [
+      { label: 'Visit Live Site ↗', href: 'https://www.mycloudmedic.com' },
+    ]
+  }
+};
+
+function openModal(id){
+  const p = projects[id];
+  if(!p) return;
+  document.getElementById('modal-tag').textContent   = p.tag;
+  document.getElementById('modal-title').textContent = p.title;
+
+  let body = `
+    <div class="modal-section">
+      <div class="modal-section-lbl">Objective</div>
+      <p class="modal-section-text">${p.objective}</p>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-lbl">Approach</div>
+      <p class="modal-section-text">${p.approach}</p>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-lbl">Outcomes</div>
+      <div class="modal-outcomes">
+        ${p.outcomes.map(o => `<div class="modal-outcome"><strong>${o.stat}</strong>${o.label}</div>`).join('')}
+      </div>
+    </div>`;
+  document.getElementById('modal-body').innerHTML = body;
+
+  let footer = p.links.map(l =>
+    `<a href="${l.href}" target="_blank" class="plink" style="font-size:.8rem;padding:.6rem 1.25rem">${l.label}</a>`
+  ).join('');
+  document.getElementById('modal-footer').innerHTML = footer;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e){
+  if(e.target === document.getElementById('modal-overlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+// CONTACT FORM - mailto
 function sendEmail() {
   const name    = document.getElementById('cf-name').value.trim();
   const email   = document.getElementById('cf-email').value.trim();
