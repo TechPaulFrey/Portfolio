@@ -975,7 +975,7 @@ body.dark .article-excerpt{color:#8a8a88}
         <div class="ptag">Marketing Tech · Workflow Automation · Email Infrastructure</div>
         <div class="pname">Building Email Warming Automation System</div>
         <p class="pdesc">
-          Built automated infrastructure that earns a new sending domain trust with mail providers before real campaign volume goes out, by simulating realistic, threaded conversations across every lane a product suite needs to send from.<br><br>
+          Our company's outbound mail was landing in spam more often than not, and I was tasked with fixing it. Built automated infrastructure that earns a new sending domain trust with mail providers before real campaign volume goes out, by simulating realistic, threaded conversations across every lane the product suite needs to send from.<br><br>
           Four n8n workflows route through a single shared lane configuration table rather than duplicating logic per sender identity - handling template mail, AI-generated persona mail, hand-constructed raw MIME threading, and native OAuth reply automation across eleven sender identities.
         </p>
         <div class="techs">
@@ -1914,7 +1914,7 @@ const projects = {
   emailwarming: {
     tag: 'Marketing Tech · Workflow Automation · Email Infrastructure',
     title: 'Building Email Warming Automation System',
-    objective: 'Build automated infrastructure that earns a new sending domain trust with mail providers before real campaign volume goes out, by simulating realistic, threaded conversations across every lane a product suite needs to send from.',
+    objective: 'The company\'s outbound mail was landing in spam more often than not. I was tasked with fixing it - building automated infrastructure that earns a new sending domain trust with mail providers before real campaign volume goes out, by simulating realistic, threaded conversations across every lane the product suite needs to send from.',
     approach: 'Built four n8n workflows around a single shared lane configuration table rather than duplicating logic per sender identity. A sender workflow routes fixed template mail and AI generated persona mail through a shared renderer, merges the branches, and logs every send. Two reply engines listen for inbound replies and construct raw MIME by hand with correct In-Reply-To and References headers, since the sending API has no native reply endpoint. A recipient workflow plays the other side of the conversation using native OAuth threading with a quoted block of the original message for realistic thread rendering. A six-hop cap on both reply workflows prevents bot-to-bot loops, and recipient address filtering replaces unreliable header-based matching, since some mail clients strip threading headers outright.',
     outcomes: [
       { stat: '11', label: 'Sender Identities' },
