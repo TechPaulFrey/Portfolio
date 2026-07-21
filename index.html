@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adebayo Paul Femi - Senior Product Analytics & AI Systems Architect</title>
+<title>Adebayo Paul Femi - Designing AI Systems, Automation & Security That Turn Operational Data Into Executive Decision Intelligence</title>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -762,6 +762,25 @@ body.dark .article-excerpt{color:#8a8a88}
     <div class="xrow">
       <div>
         <div class="xdate">Current</div>
+        <div class="xco">Alpharithm Investments</div>
+        <div class="xloc">United States · Remote</div>
+      </div>
+      <div>
+        <div class="xrole">Software QA Engineer, Automation &amp; Security</div>
+        <ul class="xbullets">
+          <li>Own the technical testing and system reliability layer across the product suite, executing manual and automated testing to ensure platform stability and consistent behaviour before and after each release.</li>
+          <li>Write automated tests with Playwright (JavaScript and Python), perform API testing with Postman and Newman, and use Selenium for cross-browser validation.</li>
+          <li>Run application security assessments and vulnerability validation using OWASP ZAP, Burp Suite, Nikto, and Nessus, verifying remediation of identified issues.</li>
+          <li>Monitor application health and investigate production issues using Kibana and Sentry, tracing error states, identifying root causes, and collaborating with engineering to resolve defects.</li>
+          <li>Convert defects into repeatable, documented test cases with reproduction steps and expected outcomes, and build regression suites to improve release quality.</li>
+          <li>Build workflow automations with n8n, deploy services with Docker, and configure AWS SES with Google Workspace for reliable automated email workflows.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="xrow">
+      <div>
+        <div class="xdate">Jan 2026 – Present</div>
         <div class="xco">LexHive</div>
         <div class="xloc">Formerly Demandlane · United States · Remote</div>
       </div>
@@ -950,8 +969,62 @@ body.dark .article-excerpt{color:#8a8a88}
   <h2 class="sh">Projects that<br><em>actually shipped.</em></h2>
   <div class="reveal">
 
+    <!-- EMAIL WARMING AUTOMATION - FEATURED PROJECT -->
+    <div class="pfeat pfeat-clickable" onclick="openModal('emailwarming')">
+      <div class="pfl">
+        <div class="ptag">Marketing Tech · Workflow Automation · Email Infrastructure</div>
+        <div class="pname">Building Email Warming Automation System</div>
+        <p class="pdesc">
+          Built automated infrastructure that earns a new sending domain trust with mail providers before real campaign volume goes out, by simulating realistic, threaded conversations across every lane a product suite needs to send from.<br><br>
+          Four n8n workflows route through a single shared lane configuration table rather than duplicating logic per sender identity - handling template mail, AI-generated persona mail, hand-constructed raw MIME threading, and native OAuth reply automation across eleven sender identities.
+        </p>
+        <div class="techs">
+          <span class="tech">n8n</span>
+          <span class="tech">AWS SES</span>
+          <span class="tech">Gmail OAuth2</span>
+          <span class="tech">OpenAI API</span>
+          <span class="tech">Supabase</span>
+          <span class="tech">Raw MIME</span>
+        </div>
+        <a href="case-study-email-warming.html" target="_blank" class="plink" onclick="event.stopPropagation()">Read Full Case Study ↗</a>
+      </div>
+      <div class="pfr">
+        <div>
+          <div class="score-lbl">Pipeline Architecture</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem">
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">11</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Sender Identities</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">4</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Core Workflows</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:2.2rem;font-weight:700;letter-spacing:-.04em;line-height:1">6</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Hop Loop Cap</div>
+            </div>
+            <div style="padding:1rem;background:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center">
+              <div style="font-family:'Times New Roman',Times,serif;font-size:1.6rem;font-weight:700;letter-spacing:-.04em;line-height:1">OAuth2</div>
+              <div style="font-family:'Calibri',Calibri,Consolas,monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem">Native Threading</div>
+            </div>
+          </div>
+          <p class="score-sub">
+            Two reply engines construct raw MIME by hand with correct In-Reply-To and References headers, since the sending API has no native reply endpoint. A recipient workflow plays the other side of the conversation using native OAuth threading with a quoted block of the original message for realistic thread rendering.
+          </p>
+          <div class="score-tags">
+            <span class="stag">Workflow Automation</span>
+            <span class="stag">Deliverability</span>
+            <span class="stag">MIME Threading</span>
+            <span class="stag">Loop Safety</span>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;font-family:'Calibri',Calibri,Consolas,monospace;font-size:.6rem;letter-spacing:.08em;color:var(--muted)">Click anywhere to see full case study →</div>
+      </div>
+    </div>
+
     <!-- NEMA - FEATURED PROJECT -->
-    <div class="pfeat pfeat-clickable" onclick="openModal('nema')">
+    <div class="pfeat pfeat-clickable" onclick="openModal('nema')" style="margin-top:1.5rem">
       <div class="pfl">
         <div class="ptag">AI Systems · Emergency Management · Open Source</div>
         <div class="pname">NEMA Emergency Dispatch Planning System</div>
@@ -1836,6 +1909,21 @@ const projects = {
     ],
     links: [
       { label: 'View Live Dashboard ↗', href: 'https://app.powerbi.com/view?r=eyJrIjoiOTVmM2JiNTQtYjYzZC00YmFmLWJjYTMtMGYyMTBmMzI3N2M2IiwidCI6IjBhNTYzYjE2LTQzNzctNDIwMi1hYzFhLWVlMDBhYTk3YTJmZSJ9&pageName=fd166fa8b2ac43768317' },
+    ]
+  },
+  emailwarming: {
+    tag: 'Marketing Tech · Workflow Automation · Email Infrastructure',
+    title: 'Building Email Warming Automation System',
+    objective: 'Build automated infrastructure that earns a new sending domain trust with mail providers before real campaign volume goes out, by simulating realistic, threaded conversations across every lane a product suite needs to send from.',
+    approach: 'Built four n8n workflows around a single shared lane configuration table rather than duplicating logic per sender identity. A sender workflow routes fixed template mail and AI generated persona mail through a shared renderer, merges the branches, and logs every send. Two reply engines listen for inbound replies and construct raw MIME by hand with correct In-Reply-To and References headers, since the sending API has no native reply endpoint. A recipient workflow plays the other side of the conversation using native OAuth threading with a quoted block of the original message for realistic thread rendering. A six-hop cap on both reply workflows prevents bot-to-bot loops, and recipient address filtering replaces unreliable header-based matching, since some mail clients strip threading headers outright.',
+    outcomes: [
+      { stat: '11', label: 'Sender Identities' },
+      { stat: '4', label: 'Core Workflows' },
+      { stat: '6', label: 'Hop Loop Cap' },
+      { stat: 'OAuth2', label: 'Native Threading' },
+    ],
+    links: [
+      { label: 'Read Full Case Study ↗', href: 'case-study-email-warming.html' },
     ]
   },
   cloudmedic: {
