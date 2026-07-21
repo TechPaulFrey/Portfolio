@@ -192,6 +192,14 @@
   }
 
   .card p { margin: 0; font-size: 14.5px; color: #4a4a48; }
+  .card-img {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+    background: var(--white);
+  }
 
   /* ---------- FIELD NOTES ---------- */
   .notes {
@@ -321,7 +329,7 @@
     </p>
 
     <div class="meta-row">
-      <div>Role<span>Solo build, architecture to deployment</span></div>
+      <div>Role<span>Assigned build, architecture to deployment</span></div>
       <div>Stack<span>n8n, AWS SES, Gmail OAuth2, OpenAI, Supabase</span></div>
       <div>Status<span>Core lanes live, scheduling and one lane in progress</span></div>
     </div>
@@ -346,20 +354,63 @@
         <circle cx="90" cy="115" r="5" style="fill:var(--green)"/>
         <circle cx="90" cy="155" r="5" style="fill:var(--green)"/>
 
-        <!-- listener node, shared for two lanes -->
-        <circle cx="330" cy="35" r="6" style="fill:var(--black)"/>
-        <circle cx="330" cy="75" r="6" style="fill:var(--black)"/>
-        <circle cx="330" cy="115" r="6" style="fill:var(--black)"/>
+        <!-- listener node, present on all four lanes now WF3b covers customer support too -->
+        <circle cx="330" cy="35" r="6" style="fill:var(--black)">
+          <animate attributeName="r" values="6;6;9;6;6" keyTimes="0;0.38;0.45;0.52;1" dur="4.5s" begin="0s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="330" cy="75" r="6" style="fill:var(--black)">
+          <animate attributeName="r" values="6;6;9;6;6" keyTimes="0;0.38;0.45;0.52;1" dur="4.5s" begin="0.6s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="330" cy="115" r="6" style="fill:var(--black)">
+          <animate attributeName="r" values="6;6;9;6;6" keyTimes="0;0.38;0.45;0.52;1" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="330" cy="155" r="6" style="fill:var(--black)">
+          <animate attributeName="r" values="6;6;9;6;6" keyTimes="0;0.38;0.45;0.52;1" dur="4.5s" begin="1.8s" repeatCount="indefinite"/>
+        </circle>
 
-        <!-- recipient node -->
-        <circle cx="560" cy="35" r="5" style="fill:var(--muted)"/>
-        <circle cx="560" cy="75" r="5" style="fill:var(--muted)"/>
-        <circle cx="560" cy="115" r="5" style="fill:var(--muted)"/>
-        <circle cx="560" cy="155" r="5" style="fill:var(--muted)"/>
+        <!-- recipient node, flashes green the moment a pulse arrives -->
+        <circle cx="560" cy="35" r="5" style="fill:var(--muted)">
+          <animate attributeName="fill" values="var(--muted);var(--muted);var(--green);var(--green);var(--muted)" keyTimes="0;0.86;0.9;0.98;1" calcMode="discrete" dur="4.5s" begin="0s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="5;5;7;7;5" keyTimes="0;0.86;0.9;0.98;1" dur="4.5s" begin="0s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="560" cy="75" r="5" style="fill:var(--muted)">
+          <animate attributeName="fill" values="var(--muted);var(--muted);var(--green);var(--green);var(--muted)" keyTimes="0;0.86;0.9;0.98;1" calcMode="discrete" dur="4.5s" begin="0.6s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="5;5;7;7;5" keyTimes="0;0.86;0.9;0.98;1" dur="4.5s" begin="0.6s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="560" cy="115" r="5" style="fill:var(--muted)">
+          <animate attributeName="fill" values="var(--muted);var(--muted);var(--green);var(--green);var(--muted)" keyTimes="0;0.86;0.9;0.98;1" calcMode="discrete" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="5;5;7;7;5" keyTimes="0;0.86;0.9;0.98;1" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="560" cy="155" r="5" style="fill:var(--muted)">
+          <animate attributeName="fill" values="var(--muted);var(--muted);var(--green);var(--green);var(--muted)" keyTimes="0;0.86;0.9;0.98;1" calcMode="discrete" dur="4.5s" begin="1.8s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="5;5;7;7;5" keyTimes="0;0.86;0.9;0.98;1" dur="4.5s" begin="1.8s" repeatCount="indefinite"/>
+        </circle>
 
         <text x="90" y="185" style="fill:var(--green)" font-family="Calibri, monospace" font-size="11" text-anchor="middle">send</text>
         <text x="330" y="185" style="fill:var(--black)" font-family="Calibri, monospace" font-size="11" text-anchor="middle">reply &amp; thread</text>
         <text x="560" y="185" style="fill:var(--muted)" font-family="Calibri, monospace" font-size="11" text-anchor="middle">recipient</text>
+
+        <!-- traveling pulses: all four lanes now route through their reply/thread node -->
+        <circle r="4" style="fill:var(--green)">
+          <animate attributeName="cx" values="90;330;330;560;90" keyTimes="0;0.4;0.5;0.9;1" dur="4.5s" begin="0s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="35;35;35;35;35" dur="4.5s" begin="0s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="4.5s" begin="0s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="4" style="fill:var(--green)">
+          <animate attributeName="cx" values="90;330;330;560;90" keyTimes="0;0.4;0.5;0.9;1" dur="4.5s" begin="0.6s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="75;75;75;75;75" dur="4.5s" begin="0.6s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="4.5s" begin="0.6s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="4" style="fill:var(--green)">
+          <animate attributeName="cx" values="90;330;330;560;90" keyTimes="0;0.4;0.5;0.9;1" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="115;115;115;115;115" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="4.5s" begin="1.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="4" style="fill:var(--green)">
+          <animate attributeName="cx" values="90;330;330;560;90" keyTimes="0;0.4;0.5;0.9;1" dur="4.5s" begin="1.8s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="155;155;155;155;155" dur="4.5s" begin="1.8s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.05;0.5;0.9;1" dur="4.5s" begin="1.8s" repeatCount="indefinite"/>
+        </circle>
       </svg>
       <p class="lane-caption">Eleven sender identities route through a shared reply engine, each keeping its own thread history and voice.</p>
     </div>
@@ -369,15 +420,19 @@
     <p class="section-label">The Problem</p>
     <h2>Cold domains get flagged, warm ones get delivered</h2>
     <p>
-      A new product suite needed several distinct sending identities, a notifications lane,
-      a research digest, six product specialists, and a support desk, each with a believable
-      history before a single real campaign went out. Mail providers score a domain on how
-      it behaves over time: reply rates, thread depth, spam complaints. There is no shortcut
-      around that except time and genuine looking conversation.
+      The company's outbound mail was landing in spam more often than not. New sending domains
+      had no history with mail providers, and every real campaign that went out on a cold domain
+      made the deliverability numbers worse instead of better. It was flagged as a priority
+      problem across a notifications lane, a research digest, six product specialists, and a
+      support desk, each needing a believable sending history before a single real campaign
+      could safely go out. Mail providers score a domain on how it behaves over time: reply
+      rates, thread depth, spam complaints. There is no shortcut around that except time and
+      genuine looking conversation.
     </p>
     <p>
-      The brief was to build the conversation, automatically, at a pace and shape that reads
-      as human, across every lane, without turning into an obvious bot loop.
+      I was asked to find a way to fix it. The brief that came out of that was to build the
+      conversation automatically, at a pace and shape that reads as human, across every lane,
+      without turning into an obvious bot loop.
     </p>
   </section>
 
@@ -392,6 +447,7 @@
     <div class="cards">
       <div class="card">
         <h3>WF1 · Sender</h3>
+        <img class="card-img" src="wf1-sender.png" alt="WF1 Sender workflow canvas">
         <p>
           Routes fixed template mail and AI generated persona mail through a shared renderer,
           merges the branches, and logs every send per lane.
@@ -399,6 +455,7 @@
       </div>
       <div class="card">
         <h3>WF2 · Reply Engine A</h3>
+        <img class="card-img" src="wf2-reply-engine-a.png" alt="WF2 Reply Engine A workflow canvas">
         <p>
           Listens for replies to the notifications lane, generates a contextual answer, and
           constructs raw MIME with correct In Reply To and References headers by hand, since
@@ -407,6 +464,7 @@
       </div>
       <div class="card">
         <h3>WF2b · Reply Engine B</h3>
+        <img class="card-img" src="wf2b-reply-engine-b.png" alt="WF2b Reply Engine B workflow canvas">
         <p>
           Covers the research lane and all six product specialists through an allowlist and a
           per product lookup table, so each persona keeps a consistent voice and brand.
@@ -414,6 +472,7 @@
       </div>
       <div class="card">
         <h3>WF3b · Recipient Auto Reply</h3>
+        <img class="card-img" src="wf3b-recipient-autoreply.png" alt="WF3b Recipient Auto Reply workflow canvas">
         <p>
           Plays the other side of the conversation using native OAuth threading, with a quoted
           block of the original message so the thread reads correctly in any client.
@@ -476,13 +535,11 @@
       <div class="status-item"><span class="dot done"></span> Core send, reply, and recipient workflows built and tested end to end</div>
       <div class="status-item"><span class="dot done"></span> Eleven sender lanes routed through shared configuration</div>
       <div class="status-item"><span class="dot open"></span> Converting workflows from manual triggers to scheduled, unattended runs</div>
-      <div class="status-item"><span class="dot open"></span> Outlook lane pending an outage resolution and app registration decision</div>
-      <div class="status-item"><span class="dot open"></span> Two persona avatar assets missing from storage</div>
     </div>
   </section>
 
   <footer>
-    Built solo, end to end. Details of the employer and live domains withheld here.
+    Assigned as a deliverability fix for the company's outbound mail, taken from architecture through deployment. Details of the employer and live domains withheld here.
   </footer>
 </div>
 
