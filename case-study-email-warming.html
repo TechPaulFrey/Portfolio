@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sender Reputation Pipeline — Case Study</title>
+<style>
+  :root {
+    --white: #fafaf8;
+    --black: #0e0e0d;
+    --gray: #f2f1ef;
+    --border: #e4e3df;
+    --muted: #9a9990;
+    --green: #2d6a4f;
+    --mono: 'Calibri', Consolas, ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'Calibri', Calibri, Arial, sans-serif;
+    --serif: 'Times New Roman', Times, serif;
+  }
+
+  body.dark {
+    --white: #0e0e0d;
+    --black: #fafaf8;
+    --gray: #1a1a18;
+    --border: #2a2a28;
+    --muted: #6a6a68;
+    --green: #4ade80;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    transition: background .25s, color .25s;
+  }
+
+  a { color: var(--green); }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- BACK LINK ---------- */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--black); }
+
+  /* ---------- HERO ---------- */
+  header.hero {
+    padding: 40px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin: 0 0 18px;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .eyebrow::before { content:''; width: 28px; height: 1px; background: var(--border); }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.12;
+    margin: 0 0 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--black);
+  }
+
+  .dek {
+    font-size: 17px;
+    color: #4a4a48;
+    font-weight: 300;
+    max-width: 560px;
+    margin: 0 0 40px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .meta-row div span {
+    display: block;
+    color: var(--black);
+    font-size: 14px;
+    font-family: var(--sans);
+    margin-top: 4px;
+  }
+
+  /* ---------- LANE DIAGRAM ---------- */
+  .lane-diagram {
+    margin: 44px 0 0;
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 20px 18px;
+    overflow-x: auto;
+  }
+
+  .lane-diagram svg { display: block; min-width: 640px; }
+
+  .lane-caption {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    margin: 0 0 22px;
+    font-weight: 600;
+    color: var(--black);
+  }
+
+  p { color: #4a4a48; font-weight: 300; margin: 0 0 16px; max-width: 680px; }
+
+  /* ---------- WORKFLOW CARDS ---------- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    border-radius: 4px;
+    padding: 20px 22px;
+  }
+
+  .card h3 {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--black);
+    margin: 0 0 8px;
+    letter-spacing: 0.02em;
+    font-weight: 700;
+  }
+
+  .card p { margin: 0; font-size: 14.5px; color: #4a4a48; }
+
+  /* ---------- FIELD NOTES ---------- */
+  .notes {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 24px;
+  }
+
+  .note {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .note:first-child { border-top: none; }
+
+  @media (max-width: 640px) {
+    .note { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  .note-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-top: 2px;
+  }
+
+  .note p { margin: 0; font-size: 15px; color: var(--black); font-weight: 400; }
+  .note p em { color: var(--muted); font-style: normal; }
+
+  /* ---------- STACK ---------- */
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--black);
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 14px;
+  }
+
+  /* ---------- STATUS ---------- */
+  .status-list { margin-top: 24px; }
+
+  .status-item {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 10px 0;
+    font-size: 15px;
+    color: var(--black);
+    font-weight: 300;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot.done { background: var(--green); }
+  .dot.open { background: var(--muted); }
+
+  footer {
+    padding: 50px 0 90px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ---------- DARK MODE TEXT OVERRIDES ---------- */
+  body.dark .dek,
+  body.dark p,
+  body.dark .card p { color: #a0a09e; }
+  body.dark .note p { color: var(--black); }
+  body.dark .status-item { color: var(--black); }
+
+  /* ---------- THEME TOGGLE ---------- */
+  .theme-toggle{
+    display:flex;align-items:center;gap:.5rem;cursor:pointer;
+    background:none;border:1px solid var(--border);border-radius:100px;
+    padding:.35rem .75rem;transition:border-color .15s;flex-shrink:0;
+    font-family:var(--mono);
+  }
+  .theme-toggle:hover{border-color:var(--black)}
+  .theme-toggle-icon{font-size:.85rem;line-height:1}
+  .theme-toggle-lbl{
+    font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  }
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <a href="index.html#projects" class="back-link">← Back to Portfolio</a>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+      <span class="theme-toggle-icon" id="theme-icon">☀</span>
+      <span class="theme-toggle-lbl" id="theme-lbl">Light</span>
+    </button>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow">Case Study / Infrastructure Engineering</p>
+    <h1>A routing system for building sender reputation before launch</h1>
+    <p class="dek">
+      A workflow automation platform that simulates realistic, threaded email conversations
+      across multiple product lanes, so a new sending domain earns trust with mail providers
+      before real customer volume goes out.
+    </p>
+
+    <div class="meta-row">
+      <div>Role<span>Solo build, architecture to deployment</span></div>
+      <div>Stack<span>n8n, AWS SES, Gmail OAuth2, OpenAI, Supabase</span></div>
+      <div>Status<span>Core lanes live, scheduling and one lane in progress</span></div>
+    </div>
+
+    <div class="lane-diagram">
+      <svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg">
+        <!-- lane rails -->
+        <line x1="30" y1="35" x2="610" y2="35" style="stroke:var(--border)" stroke-width="1.5"/>
+        <line x1="30" y1="75" x2="610" y2="75" style="stroke:var(--border)" stroke-width="1.5"/>
+        <line x1="30" y1="115" x2="610" y2="115" style="stroke:var(--border)" stroke-width="1.5"/>
+        <line x1="30" y1="155" x2="610" y2="155" style="stroke:var(--border)" stroke-width="1.5"/>
+
+        <!-- lane labels -->
+        <text x="30" y="24" style="fill:var(--muted)" font-family="Calibri, monospace" font-size="11">notifications</text>
+        <text x="30" y="64" style="fill:var(--muted)" font-family="Calibri, monospace" font-size="11">research reports</text>
+        <text x="30" y="104" style="fill:var(--muted)" font-family="Calibri, monospace" font-size="11">product personas x6</text>
+        <text x="30" y="144" style="fill:var(--muted)" font-family="Calibri, monospace" font-size="11">customer support</text>
+
+        <!-- sender nodes -->
+        <circle cx="90" cy="35" r="5" style="fill:var(--green)"/>
+        <circle cx="90" cy="75" r="5" style="fill:var(--green)"/>
+        <circle cx="90" cy="115" r="5" style="fill:var(--green)"/>
+        <circle cx="90" cy="155" r="5" style="fill:var(--green)"/>
+
+        <!-- listener node, shared for two lanes -->
+        <circle cx="330" cy="35" r="6" style="fill:var(--black)"/>
+        <circle cx="330" cy="75" r="6" style="fill:var(--black)"/>
+        <circle cx="330" cy="115" r="6" style="fill:var(--black)"/>
+
+        <!-- recipient node -->
+        <circle cx="560" cy="35" r="5" style="fill:var(--muted)"/>
+        <circle cx="560" cy="75" r="5" style="fill:var(--muted)"/>
+        <circle cx="560" cy="115" r="5" style="fill:var(--muted)"/>
+        <circle cx="560" cy="155" r="5" style="fill:var(--muted)"/>
+
+        <text x="90" y="185" style="fill:var(--green)" font-family="Calibri, monospace" font-size="11" text-anchor="middle">send</text>
+        <text x="330" y="185" style="fill:var(--black)" font-family="Calibri, monospace" font-size="11" text-anchor="middle">reply &amp; thread</text>
+        <text x="560" y="185" style="fill:var(--muted)" font-family="Calibri, monospace" font-size="11" text-anchor="middle">recipient</text>
+      </svg>
+      <p class="lane-caption">Eleven sender identities route through a shared reply engine, each keeping its own thread history and voice.</p>
+    </div>
+  </header>
+
+  <section id="problem">
+    <p class="section-label">The Problem</p>
+    <h2>Cold domains get flagged, warm ones get delivered</h2>
+    <p>
+      A new product suite needed several distinct sending identities, a notifications lane,
+      a research digest, six product specialists, and a support desk, each with a believable
+      history before a single real campaign went out. Mail providers score a domain on how
+      it behaves over time: reply rates, thread depth, spam complaints. There is no shortcut
+      around that except time and genuine looking conversation.
+    </p>
+    <p>
+      The brief was to build the conversation, automatically, at a pace and shape that reads
+      as human, across every lane, without turning into an obvious bot loop.
+    </p>
+  </section>
+
+  <section id="architecture">
+    <p class="section-label">Architecture</p>
+    <h2>Four workflows, one shared configuration</h2>
+    <p>
+      Everything reads from a single lane configuration table rather than being duplicated
+      per identity, so adding a twelfth sender is a data change, not a new workflow.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>WF1 · Sender</h3>
+        <p>
+          Routes fixed template mail and AI generated persona mail through a shared renderer,
+          merges the branches, and logs every send per lane.
+        </p>
+      </div>
+      <div class="card">
+        <h3>WF2 · Reply Engine A</h3>
+        <p>
+          Listens for replies to the notifications lane, generates a contextual answer, and
+          constructs raw MIME with correct In Reply To and References headers by hand, since
+          the sending API has no native reply endpoint.
+        </p>
+      </div>
+      <div class="card">
+        <h3>WF2b · Reply Engine B</h3>
+        <p>
+          Covers the research lane and all six product specialists through an allowlist and a
+          per product lookup table, so each persona keeps a consistent voice and brand.
+        </p>
+      </div>
+      <div class="card">
+        <h3>WF3b · Recipient Auto Reply</h3>
+        <p>
+          Plays the other side of the conversation using native OAuth threading, with a quoted
+          block of the original message so the thread reads correctly in any client.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes">
+    <p class="section-label">Field Notes</p>
+    <h2>What actually broke, and what it taught me</h2>
+
+    <div class="notes">
+      <div class="note">
+        <div class="note-tag">Run Mode</div>
+        <p>A code node left on run once for all items will silently collapse an entire batch
+        into a single item. <em>Now a standing checklist item on every new node.</em></p>
+      </div>
+      <div class="note">
+        <div class="note-tag">Merging</div>
+        <p>Two parallel render branches need an explicit merge before the next step, or the
+        platform treats each branch as its own execution run. <em>Easy to miss, easy to debug wrong.</em></p>
+      </div>
+      <div class="note">
+        <div class="note-tag">Domain Match</div>
+        <p>A naive ends with check on the sending domain silently dropped subdomains.
+        <em>Fixed once, but a good reminder to test the edge case you did not write.</em></p>
+      </div>
+      <div class="note">
+        <div class="note-tag">Threading</div>
+        <p>Some clients strip In Reply To and References headers outright, so filtering by
+        recipient address turned out more reliable than trusting headers alone.</p>
+      </div>
+      <div class="note">
+        <div class="note-tag">Loop Safety</div>
+        <p>A six hop cap on both reply workflows keeps two bots from replying to each other
+        indefinitely. <em>Cheap insurance against a very embarrassing failure mode.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <p class="section-label">Tech Stack</p>
+    <h2>Tools</h2>
+    <div class="stack">
+      <span class="pill">n8n</span>
+      <span class="pill">AWS SES</span>
+      <span class="pill">Gmail OAuth2</span>
+      <span class="pill">OpenAI API</span>
+      <span class="pill">Supabase</span>
+      <span class="pill">Raw MIME construction</span>
+      <span class="pill">Microsoft Graph (in progress)</span>
+    </div>
+  </section>
+
+  <section id="status">
+    <p class="section-label">Status</p>
+    <h2>Honest state of the build</h2>
+    <div class="status-list">
+      <div class="status-item"><span class="dot done"></span> Core send, reply, and recipient workflows built and tested end to end</div>
+      <div class="status-item"><span class="dot done"></span> Eleven sender lanes routed through shared configuration</div>
+      <div class="status-item"><span class="dot open"></span> Converting workflows from manual triggers to scheduled, unattended runs</div>
+      <div class="status-item"><span class="dot open"></span> Outlook lane pending an outage resolution and app registration decision</div>
+      <div class="status-item"><span class="dot open"></span> Two persona avatar assets missing from storage</div>
+    </div>
+  </section>
+
+  <footer>
+    Built solo, end to end. Details of the employer and live domains withheld here.
+  </footer>
+</div>
+
+<script>
+// ─── DARK / LIGHT TOGGLE — mirrors the main portfolio's saved preference ───
+const savedTheme = localStorage.getItem('theme') || 'light';
+if (savedTheme === 'dark') applyDark();
+else applyLight();
+
+function applyDark(){
+  document.body.classList.add('dark');
+  const icon = document.getElementById('theme-icon');
+  const lbl  = document.getElementById('theme-lbl');
+  if (icon) icon.textContent = '☾';
+  if (lbl)  lbl.textContent  = 'Dark';
+}
+function applyLight(){
+  document.body.classList.remove('dark');
+  const icon = document.getElementById('theme-icon');
+  const lbl  = document.getElementById('theme-lbl');
+  if (icon) icon.textContent = '☀';
+  if (lbl)  lbl.textContent  = 'Light';
+}
+function toggleTheme(){
+  if (document.body.classList.contains('dark')) {
+    applyLight(); localStorage.setItem('theme', 'light');
+  } else {
+    applyDark(); localStorage.setItem('theme', 'dark');
+  }
+}
+
+// Keep in sync if the theme is changed in another tab (e.g. the main portfolio page)
+window.addEventListener('storage', (e) => {
+  if (e.key === 'theme') {
+    if (e.newValue === 'dark') applyDark();
+    else applyLight();
+  }
+});
+</script>
+
+</body>
+</html>
